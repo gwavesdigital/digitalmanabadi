@@ -139,7 +139,6 @@
     <header class="app-header"></header>
 
     <main class="app-view">
-      <!-- Cinematic Dashboard Hero Card with School Details & HM Name -->
       <div class="cinematic-dashboard-hero">
         <div class="hero-emblem" style="width: 60px; height: 60px; margin: 0 auto 8px auto; box-shadow: 0 4px 12px rgba(244, 196, 48, 0.35);">
           <img src="../assets/icon-192.png" alt="Logo" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
@@ -156,20 +155,17 @@
         </div>
       </div>
 
-      <!-- Moving Notification Ribbon (Marquee) -->
       <div class="ribbon-container" title="Official Announcements">
         <div class="ribbon-text">
           📢 ప్రభుత్వ పాఠశాలల డిజిటల్ ఈ-డైరీ కి స్వాగతం! · Welcome to AP Schools E-Diary System · An initiative of VALIASS team · Have a wonderful and productive teaching day! 🍎✨
         </div>
       </div>
 
-      <!-- Select Your Job Section -->
       <h3 class="section-heading">
         <span>🎯</span> Select Your Job / Portal
       </h3>
 
       <div class="portal-grid">
-        <!-- Option 1: E-Diary -->
         <a href="./ediary.html" class="portal-card">
           <div class="portal-icon">📖</div>
           <div class="portal-info">
@@ -178,7 +174,6 @@
           </div>
         </a>
 
-        <!-- Option 2: School Announcements -->
         <a href="./announcement.html" class="portal-card">
           <div class="portal-icon">📢</div>
           <div class="portal-info">
@@ -187,7 +182,6 @@
           </div>
         </a>
 
-        <!-- Option 3: MDM & Cook Portal -->
         <a href="./mdm-cook.html" class="portal-card">
           <div class="portal-icon">🍲</div>
           <div class="portal-info">
@@ -196,7 +190,6 @@
           </div>
         </a>
 
-        <!-- Option 4: Review Reports -->
         <a href="./reports.html" class="portal-card">
           <div class="portal-icon">📊</div>
           <div class="portal-info">
@@ -213,13 +206,14 @@
   <script src="../js/app.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      if (!localStorage.getItem('ap_app_password')) {
-        window.location.href = './login.html';
+      const savedPass = localStorage.getItem('ap_app_password');
+      if (!savedPass) {
+        window.location.href = './setup.html';
         return;
       }
 
       const schoolName = localStorage.getItem('ap_school_name') || 'AP Model School';
-      const district = localStorage.getItem('ap_district') || 'District';
+      const district = localStorage.getItem('ap_district'] || 'District';
       const mandal = localStorage.getItem('ap_mandal') || 'Mandal';
       const village = localStorage.getItem('ap_village') || 'Village';
       const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
