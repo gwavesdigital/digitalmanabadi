@@ -241,7 +241,7 @@ body {
   margin: 0 auto 16px auto;
 }
 
-/* Optimized Instant-Start Marquee Ribbon */
+/* Instant-Start Marquee Ribbon */
 .ribbon-container {
   background: rgba(255, 255, 255, 0.95);
   border: 1.5px solid rgba(14, 123, 62, 0.25);
@@ -256,21 +256,19 @@ body {
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   transform: translateZ(0);
   backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .ribbon-text {
   display: inline-block;
-  will-change: transform;
-  animation: marquee 20s linear infinite;
+  animation: marquee 16s linear infinite;
   font-size: 0.76rem;
   font-weight: 600;
   color: var(--primary-dark);
 }
 
 @keyframes marquee {
-  0% { transform: translate3d(100%, 0, 0); }
-  100% { transform: translate3d(-100%, 0, 0); }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 
 /* Buttons */
