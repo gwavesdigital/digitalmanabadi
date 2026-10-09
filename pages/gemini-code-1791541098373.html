@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · School Announcements</title>
+
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css" />
+  
+  <style>
+    .premium-hero-card {
+      background: linear-gradient(135deg, rgba(14,123,62,0.1) 0%, rgba(244,196,48,0.08) 100%);
+      border: 1.5px solid rgba(14, 123, 62, 0.2);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(14, 123, 62, 0.05);
+    }
+    .seal-box {
+      border: 2px dashed #1a73e8;
+      background: linear-gradient(135deg, rgba(26, 115, 232, 0.04) 0%, rgba(26, 115, 232, 0.01) 100%);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      margin: 16px 0;
+    }
+    .blue-seal-stamp {
+      width: 110px;
+      height: 110px;
+      border: 3.5px solid #1a73e8;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto;
+      color: #1a73e8;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.58rem;
+      text-align: center;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(26,115,232,0.25);
+      transform: rotate(-6deg);
+      background: rgba(255,255,255,0.95);
+      padding: 8px;
+    }
+    .whatsapp-preview-box {
+      background: #E8F8EC;
+      border: 1.5px solid rgba(32, 186, 90, 0.35);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.78rem;
+      color: #0c5123;
+      white-space: pre-wrap;
+      font-family: monospace;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <header class="app-header"></header>
+
+    <main class="app-view">
+      <div class="premium-hero-card">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; background: var(--primary-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid rgba(14,123,62,0.2);">
+            📢
+          </div>
+          <div>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.2rem; margin-bottom: 2px;">
+              School & Class Announcements
+            </h2>
+            <p style="font-size: 0.74rem; color: var(--text-muted);">
+              Publish official circulars, notices, and updates.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-radius: 18px; padding: 20px;">
+        <form id="announcement-form" class="form-vertical" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label for="announcement-type">Announcement Category</label>
+            <select id="announcement-type" onchange="toggleTargetClass()" required style="border-radius: 10px; font-weight: 600;">
+              <option value="school" selected>🏫 School-Wide Announcement</option>
+              <option value="class">👨‍🎓 Class-Specific Announcement</option>
+            </select>
+          </div>
+
+          <div id="target-class-group" class="form-group hidden">
+            <label for="target-class">Select Target Class</label>
+            <select id="target-class" style="border-radius: 10px;">
+              <option value="" disabled selected>-- Choose Class --</option>
+              <option value="Class 1">Class 1</option>
+              <option value="Class 2">Class 2</option>
+              <option value="Class 3">Class 3</option>
+              <option value="Class 4">Class 4</option>
+              <option value="Class 5">Class 5</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="ann-date">Date</label>
+              <input type="date" id="ann-date" required style="border-radius: 10px;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="ann-teacher">Teacher / Author</label>
+              <input type="text" id="ann-teacher" placeholder="Enter your name" required style="border-radius: 10px;" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 12px;">
+            <label for="ann-title">Announcement Title</label>
+            <input type="text" id="ann-title" placeholder="e.g., Parent-Teacher Meeting on Saturday" required style="border-radius: 10px;" />
+          </div>
+
+          <div class="form-group">
+            <label for="ann-notes">Announcement Details / Notes</label>
+            <textarea id="ann-notes" rows="4" placeholder="Enter full announcement message, timings, instructions..." required style="border-radius: 10px;"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+            <button type="button" onclick="saveAnnouncementForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              💾 Save Data
+            </button>
+            <button type="button" onclick="clearAnnouncementForm()" class="btn" style="background: #ffebee; color: #c62828; border: 1.5px solid rgba(198,40,40,0.3); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              🗑️ Clear All
+            </button>
+          </div>
+
+          <button type="button" onclick="generateHMSeal()" class="btn btn-primary btn-block" style="margin-top: 8px; font-size: 0.95rem; padding: 14px; border-radius: 12px;">
+            🔏 Get HM Seal & Generate Options
+          </button>
+        </form>
+
+        <div id="seal-display-section" class="seal-box hidden">
+          <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px;">OFFICIAL HEAD MASTER VERIFICATION</p>
+          <div class="blue-seal-stamp" id="seal-stamp-preview"></div>
+          <p style="font-size: 0.7rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
+        </div>
+
+        <div id="post-seal-actions" class="hidden" style="margin-top: 16px;">
+          <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker); margin-bottom: 6px; display: block;">WhatsApp Formatted Message Preview:</label>
+          <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" onclick="copyFormattedMessage()" class="btn" style="background: #e2f0d9; color: #274e13; border: 1px solid #b6d7a8; font-size: 0.95rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              📋 Copy Formatted Message
+            </button>
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); font-weight: 700;">
+              💬 Share to WhatsApp Group
+            </button>
+            <button type="button" onclick="createAnnouncementPoster()" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%); font-weight: 700;">
+              🎨 Create & Download Premium Poster (PNG)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="app-footer"></footer>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    let isSealGenerated = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('ap_app_password')) {
+        window.location.href = './login.html';
+        return;
+      }
+      document.getElementById('ann-date').value = new Date().toISOString().split('T')[0];
+      const savedTeacher = localStorage.getItem('ap_last_teacher') || '';
+      if (savedTeacher) document.getElementById('ann-teacher').value = savedTeacher;
+    });
+
+    function toggleTargetClass() {
+      const type = document.getElementById('announcement-type').value;
+      const classGroup = document.getElementById('target-class-group');
+      if (type === 'class') {
+        classGroup.classList.remove('hidden');
+      } else {
+        classGroup.classList.add('hidden');
+      }
+    }
+
+    function saveAnnouncementForm() {
+      const teacher = document.getElementById('ann-teacher').value;
+      if (teacher) localStorage.setItem('ap_last_teacher', teacher);
+      alert('Announcement data saved successfully!');
+    }
+
+    function clearAnnouncementForm() {
+      if (confirm('Are you sure you want to clear all announcement fields?')) {
+        document.getElementById('announcement-form').reset();
+        document.getElementById('ann-date').value = new Date().toISOString().split('T')[0];
+        toggleTargetClass();
+        document.getElementById('seal-display-section').classList.add('hidden');
+        document.getElementById('post-seal-actions').classList.add('hidden');
+        isSealGenerated = false;
+      }
+    }
+
+    function generateHMSeal() {
+      const title = document.getElementById('ann-title').value;
+      const notes = document.getElementById('ann-notes').value;
+      const teacher = document.getElementById('ann-teacher').value;
+
+      if (!title || !notes || !teacher) {
+        alert('Please fill in all required fields (Teacher, Title, Notes).');
+        return;
+      }
+
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const schoolName = localStorage.getItem('ap_school_name') || 'AP School';
+      const now = new Date();
+      const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('seal-stamp-preview').innerHTML = `
+        <span style="font-size: 0.52rem; font-weight: 700; line-height: 1.1;">${schoolName}</span>
+        <span style="font-size: 0.55rem; font-weight: 800; margin: 3px 0; color: #0c5123;">★ HM: ${hmName} ★</span>
+        <span style="font-size: 0.45rem;">OFFICIAL SEAL</span>
+      `;
+      document.getElementById('seal-timestamp').textContent = `Approved On: ${timeStr}`;
+
+      document.getElementById('seal-display-section').classList.remove('hidden');
+      document.getElementById('post-seal-actions').classList.remove('hidden');
+      isSealGenerated = true;
+
+      buildWhatsAppText(hmName, timeStr);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function buildWhatsAppText(hmName, timeStr) {
+      const school = localStorage.getItem('ap_school_name') || 'AP School';
+      const type = document.getElementById('announcement-type').value;
+      const targetClass = document.getElementById('target-class').value;
+      const date = document.getElementById('ann-date').value;
+      const teacher = document.getElementById('ann-teacher').value;
+      const title = document.getElementById('ann-title').value;
+      const notes = document.getElementById('ann-notes').value;
+
+      const scopeStr = type === 'class' ? `👨‍🎓 *Target*: ${targetClass}` : `🏫 *Scope*: School-Wide Announcement`;
+
+      const message = `📢 *AP SCHOOLS OFFICIAL CIRCULAR* 🍎\n` +
+        `📍 *School*: ${school}\n` +
+        `${scopeStr}\n` +
+        `📅 *Date*: ${date} | *By*: ${teacher}\n\n` +
+        `📌 *Title*: *${title}*\n\n` +
+        `📝 *Details*:\n${notes}\n\n` +
+        `🔏 *HM Approved*: ${hmName} (${timeStr})\n` +
+        `✨ An initiative of @VALIASS team for AP Schools`;
+
+      document.getElementById('whatsapp-text-preview').textContent = message;
+      window.whatsappShareMessage = message;
+    }
+
+    function copyFormattedMessage() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      navigator.clipboard.writeText(window.whatsappShareMessage || '').then(() => {
+        alert('Formatted message copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy message.');
+      });
+    }
+
+    function shareToWhatsApp() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      const encoded = encodeURIComponent(window.whatsappShareMessage || 'AP Schools Announcement');
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    }
+
+    function createAnnouncementPoster() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first before creating the poster.');
+        return;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1130;
+      const ctx = canvas.getContext('2d');
+
+      const bgGrad = ctx.createLinearGradient(0, 0, 800, 1130);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F2FAF5');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 800, 1130);
+
+      // Rich Emerald Header Banner
+      ctx.fillStyle = '#0E7B3E';
+      ctx.fillRect(0, 0, 800, 140);
+
+      // Centered Header Typography (No emblem)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 15px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('GOVERNMENT OF ANDHRA PRADESH', 400, 42);
+
+      ctx.font = 'bold 26px "Playfair Display", serif';
+      ctx.fillText('AP Schools Digital Mana Badi', 400, 76);
+
+      // Pill Badge for Module
+      ctx.save();
+      ctx.fillStyle = '#F4C430';
+      ctx.beginPath();
+      ctx.roundRect(260, 92, 280, 26, 13);
+      ctx.fill();
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillText('📢 School Announcements', 400, 110);
+      ctx.restore();
+
+      // Gold Accent Ribbon
+      ctx.fillStyle = '#F4C430';
+      ctx.fillRect(0, 140, 800, 6);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#D2DCD6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(50, 170, 700, 115, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      const school = localStorage.getItem('ap_school_name') || 'AP Model School';
+      const district = localStorage.getItem('ap_district') || '';
+      const mandal = localStorage.getItem('ap_mandal') || '';
+      const village = localStorage.getItem('ap_village') || '';
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 22px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(school, 80, 212);
+
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillText(`Location: ${village}, ${mandal} Mandal, ${district} Dist.`, 80, 242);
+
+      const type = document.getElementById('announcement-type').value;
+      const targetClass = document.getElementById('target-class').value;
+      const scopeLabel = type === 'class' ? `Target: ${targetClass}` : 'Scope: School-Wide';
+      const date = document.getElementById('ann-date').value;
+      const teacher = document.getElementById('ann-teacher').value;
+      ctx.fillText(`${scopeLabel}   |   Date: ${date}   |   By: ${teacher}`, 80, 268);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(50, 305, 700, 490, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#0E7B3E';
+      ctx.font = 'bold 20px "Playfair Display", serif';
+      ctx.fillText('📌 Official Circular & Notice', 80, 345);
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 20px "Playfair Display", serif';
+      const title = document.getElementById('ann-title').value;
+      ctx.fillText(title, 80, 390);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '16px Inter, sans-serif';
+      const notes = document.getElementById('ann-notes').value;
+      
+      let words = notes.split(' ');
+      let line = '';
+      let testLine = '';
+      let y = 435;
+      let lineHeight = 28;
+
+      for (let n = 0; n < words.length; n++) {
+        testLine += words[n] + ' ';
+        if (ctx.measureText(testLine).width > 620) {
+          ctx.fillText(line, 80, y);
+          line = words[n] + ' ';
+          testLine = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, 80, y);
+
+      const sealBoxY = 815;
+      ctx.fillStyle = '#F2FAF5';
+      ctx.strokeStyle = 'rgba(14,123,62,0.2)';
+      ctx.beginPath();
+      ctx.roundRect(50, sealBoxY, 700, 215, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(620, sealBoxY + 108);
+      ctx.rotate(-0.08);
+      
+      ctx.strokeStyle = '#1a73e8';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 62, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, 52, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1a73e8';
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(school.substring(0, 22), 0, -22);
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = '#063D1E';
+      ctx.fillText(`HM: ${localStorage.getItem('ap_hm_name') || 'Head Master'}`, 0, 2);
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.fillStyle = '#1a73e8';
+      ctx.fillText('OFFICIAL SEAL', 0, 24);
+      ctx.restore();
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 18px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Head Master Verification & Official Seal', 80, sealBoxY + 40);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '15px Inter, sans-serif';
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const timeStr = document.getElementById('seal-timestamp').textContent.replace('Approved On: ', '');
+      ctx.fillText(`Head Master Name: ${hmName}`, 80, sealBoxY + 85);
+      ctx.fillText(`Approval Timestamp: ${timeStr}`, 80, sealBoxY + 120);
+      ctx.fillText('Status: Digitally Verified & Approved by School Authority', 80, sealBoxY + 155);
+
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('An initiative of @VALIASS team for AP Schools', 400, 1075);
+
+      const link = document.createElement('a');
+      link.download = `AP-Schools-Announcement-${date}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
