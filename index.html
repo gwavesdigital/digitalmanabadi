@@ -6,10 +6,12 @@
   <meta name="theme-color" content="#0E7B3E" />
   <title>AP Schools · E-Diary & Management System</title>
 
+  <!-- Favicon & PWA Icons -->
   <link rel="icon" href="./assets/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="./assets/icon-192.png">
   <link rel="manifest" href="./manifest.json">
 
+  <!-- Social Media Preview -->
   <meta property="og:title" content="AP Schools E-Diary & Management System">
   <meta property="og:description" content="Official digital assistant for Teachers, Cooks, and Head Masters across Andhra Pradesh. An initiative of VALIASS team.">
   <meta property="og:image" content="./assets/og-image.png">
@@ -20,9 +22,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="./style.css" />
+  <style>
+    .ribbon-container {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid rgba(14, 123, 62, 0.25);
+      border-radius: 14px;
+      padding: 8px 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      margin: 12px auto 16px auto;
+      width: 100%;
+      max-width: 280px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transform: translateZ(0);
+    }
+    .ribbon-text {
+      display: inline-block;
+      will-change: transform;
+      animation: marquee 22s linear infinite;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    @keyframes marquee {
+      0% { transform: translate3d(100%, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Background FX -->
   <div class="background" aria-hidden="true">
     <div class="bg-glow bg-glow-green"></div>
     <div class="bg-glow bg-glow-gold"></div>
@@ -31,10 +62,13 @@
 
   <div class="app">
     
+    <!-- Header (Dynamically injected via app.js) -->
     <header class="app-header"></header>
 
+    <!-- Main Content -->
     <main class="app-view home-view">
       
+      <!-- Premium Circular Center Emblem Logo -->
       <div class="hero-emblem">
         <img src="./assets/icon-192.png" alt="AP Schools Logo" />
       </div>
@@ -47,10 +81,18 @@
         A Pilot Digital Initiative MPMP School No.1, Dagguluru Under the Leadership of Headmaster Sri V. Srinivasa Raju[cite: 4].
       </p>
 
+      <!-- Moving Notification Ribbon (Marquee) on Home Page -->
+      <div class="ribbon-container" title="Official Announcements">
+        <div class="ribbon-text">
+          📢 ప్రభుత్వ పాఠశాలల డిజిటల్ ఈ-డైరీ కి స్వాగతం! · Welcome to AP Schools E-Diary System · An initiative of VALIASS team for AP Schools · Have a wonderful and productive teaching day! 🍎✨
+        </div>
+      </div>
+
       <button onclick="routerLaunch()" class="btn btn-primary btn-xl hero-btn-action">
         Get Started →
       </button>
 
+      <!-- Model School Showcase Photo Card -->
       <div class="school-showcase-card">
         <img src="./assets/model-school.jpg" alt="AP Model School" class="school-showcase-img" />
         <div class="school-showcase-overlay">
@@ -59,6 +101,7 @@
       </div>
     </main>
 
+    <!-- Footer (Injected via app.js) -->
     <footer class="app-footer"></footer>
 
   </div>
@@ -68,8 +111,10 @@
     function routerLaunch() {
       const savedPass = localStorage.getItem('ap_app_password');
       const savedSchool = localStorage.getItem('ap_school_name');
-      if (savedPass && savedPass.trim() !== '' && savedSchool) {
-        window.location.href = './pages/dashboard.html';
+      
+      // If already registered, go directly to PIN login. If first time, go to setup.
+      if (savedPass && savedSchool) {
+        window.location.href = './pages/login.html';
       } else {
         window.location.href = './pages/setup.html';
       }
