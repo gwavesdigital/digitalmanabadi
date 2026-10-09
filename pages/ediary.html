@@ -348,46 +348,56 @@
       canvas.height = 1130;
       const ctx = canvas.getContext('2d');
 
-      // 1. Premium Background gradient
       const bgGrad = ctx.createLinearGradient(0, 0, 800, 1130);
       bgGrad.addColorStop(0, '#FFFFFF');
       bgGrad.addColorStop(1, '#F2FAF5');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, 800, 1130);
 
-      // 2. Rich Emerald Header Banner
       ctx.fillStyle = '#0E7B3E';
       ctx.fillRect(0, 0, 800, 140);
 
       const logoImg = new Image();
-      logoImg.crossOrigin = 'anonymous';
       logoImg.src = '../assets/icon-192.png';
       
       logoImg.onload = function() {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(70, 70, 42, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(logoImg, 28, 28, 84, 84);
-        ctx.restore();
+        try {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(70, 70, 42, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(logoImg, 28, 28, 84, 84);
+          ctx.restore();
 
-        ctx.strokeStyle = '#F4C430';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(70, 70, 42, 0, Math.PI * 2);
-        ctx.stroke();
-
+          ctx.strokeStyle = '#F4C430';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(70, 70, 42, 0, Math.PI * 2);
+          ctx.stroke();
+        } catch (e) {
+          console.log('Logo draw skipped:', e);
+        }
         renderPremiumPosterContent(ctx);
       };
 
       logoImg.onerror = function() {
         renderPremiumPosterContent(ctx);
       };
+      
+      setTimeout(() => {
+        if (!window.posterRendered) {
+          window.posterRendered = true;
+          renderPremiumPosterContent(ctx);
+        }
+      }, 300);
     }
 
     function renderPremiumPosterContent(ctx) {
-      // Header Title & Subtitle
+      if (window.posterExecutionLock) return;
+      window.posterExecutionLock = true;
+      setTimeout(() => { window.posterExecutionLock = false; }, 1000);
+
       ctx.fillStyle = '#FFFFFF';
       ctx.font = 'bold 26px "Playfair Display", serif';
       ctx.textAlign = 'left';
@@ -397,11 +407,9 @@
       ctx.fillStyle = '#E6F4EC';
       ctx.fillText('AP Schools Digital Classroom E-Diary System', 135, 88);
 
-      // Gold Accent Ribbon
       ctx.fillStyle = '#F4C430';
       ctx.fillRect(0, 140, 800, 6);
 
-      // 3. School Details Box (Card)
       ctx.fillStyle = '#FFFFFF';
       ctx.strokeStyle = '#D2DCD6';
       ctx.lineWidth = 2;
@@ -428,7 +436,6 @@
       const teacher = document.getElementById('teacher-name').value;
       ctx.fillText(`Date: ${date}   |   Class: Class ${classNum}   |   Teacher: ${teacher}`, 80, 268);
 
-      // 4. Subjects Card (Dynamic height depending on notes)
       const notes = document.getElementById('diary-notes').value.trim();
       const hasNotes = notes !== '';
       const contentCardHeight = hasNotes ? 400 : 490;
@@ -464,7 +471,6 @@
         yPos += 38;
       });
 
-      // Conditional Notes Box on Poster (Only renders if user entered notes)
       let sealBoxY = 815;
       if (hasNotes) {
         ctx.fillStyle = '#F2FAF5';
@@ -484,7 +490,6 @@
         sealBoxY = 730;
       }
 
-      // 5. Official HM Seal & Stamp Box (Cinematic View)
       ctx.fillStyle = '#F2FAF5';
       ctx.strokeStyle = 'rgba(14,123,62,0.2)';
       ctx.beginPath();
@@ -492,7 +497,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Draw Professional Blue Official Seal Stamp on right
       ctx.save();
       ctx.translate(620, sealBoxY + 108);
       ctx.rotate(-0.08);
@@ -531,7 +535,6 @@
       ctx.fillText(`Approval Timestamp: ${timeStr}`, 80, sealBoxY + 120);
       ctx.fillText('Status: Digitally Verified & Approved by School Authority', 80, sealBoxY + 155);
 
-      // 6. Footer brand
       ctx.fillStyle = '#6B7A72';
       ctx.font = '13px Inter, sans-serif';
       ctx.textAlign = 'center';
