@@ -283,6 +283,34 @@ html, body {
     letter-spacing: 0.3px;
 }
 
+/* Optimized Smooth Marquee Ribbon Styles */
+.ribbon-container {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid rgba(14, 123, 62, 0.25);
+    border-radius: 14px;
+    padding: 10px 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transform: translateZ(0);
+}
+
+.ribbon-text {
+    display: inline-block;
+    will-change: transform;
+    animation: marquee 22s linear infinite;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+@keyframes marquee {
+    0% { transform: translate3d(100%, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
 /* Attempt Indicator Dots Styling (Red Warning) */
 .attempt-dots-wrapper {
     display: flex;
