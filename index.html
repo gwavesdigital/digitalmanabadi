@@ -6,12 +6,10 @@
   <meta name="theme-color" content="#0E7B3E" />
   <title>AP Schools · E-Diary & Management System</title>
 
-  <!-- Favicon & PWA Icons -->
   <link rel="icon" href="./assets/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="./assets/icon-192.png">
   <link rel="manifest" href="./manifest.json">
 
-  <!-- Social Media Preview -->
   <meta property="og:title" content="AP Schools E-Diary & Management System">
   <meta property="og:description" content="Official digital assistant for Teachers, Cooks, and Head Masters across Andhra Pradesh. An initiative of VALIASS team.">
   <meta property="og:image" content="./assets/og-image.png">
@@ -25,7 +23,6 @@
 </head>
 <body>
 
-  <!-- Background FX -->
   <div class="background" aria-hidden="true">
     <div class="bg-glow bg-glow-green"></div>
     <div class="bg-glow bg-glow-gold"></div>
@@ -34,30 +31,26 @@
 
   <div class="app">
     
-    <!-- Header (Dynamically injected via app.js) -->
     <header class="app-header"></header>
 
-    <!-- Main Content -->
     <main class="app-view home-view">
       
-      <!-- Premium Circular Center Emblem Logo -->
       <div class="hero-emblem">
         <img src="./assets/icon-192.png" alt="AP Schools Logo" />
       </div>
 
       <span class="hero-subtitle">Government of Andhra Pradesh</span>
       
-      <h2 class="hero-title">DIGITAL MANA BADI </h2>
+      <h2 class="hero-title">DIGITAL MANA BADI</h2>
       
       <p class="hero-desc">
-        A Pilot Digital Initiative MPMP School No.1,Dagguluru Under the Leadership of Headmaster  Sri V. Srinivasa Raju.
+        A Pilot Digital Initiative MPMP School No.1, Dagguluru Under the Leadership of Headmaster Sri V. Srinivasa Raju[cite: 4].
       </p>
 
       <button onclick="routerLaunch()" class="btn btn-primary btn-xl hero-btn-action">
         Get Started →
       </button>
 
-      <!-- Model School Showcase Photo Card (Placed below Get Started button) -->
       <div class="school-showcase-card">
         <img src="./assets/model-school.jpg" alt="AP Model School" class="school-showcase-img" />
         <div class="school-showcase-overlay">
@@ -66,7 +59,6 @@
       </div>
     </main>
 
-    <!-- Footer (Injected via app.js) -->
     <footer class="app-footer"></footer>
 
   </div>
@@ -75,8 +67,9 @@
   <script>
     function routerLaunch() {
       const savedPass = localStorage.getItem('ap_app_password');
-      if (savedPass && savedPass.trim() !== '') {
-        window.location.href = './pages/login.html';
+      const savedSchool = localStorage.getItem('ap_school_name');
+      if (savedPass && savedPass.trim() !== '' && savedSchool) {
+        window.location.href = './pages/dashboard.html';
       } else {
         window.location.href = './pages/setup.html';
       }
