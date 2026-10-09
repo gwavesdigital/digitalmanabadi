@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const footers = document.querySelectorAll('.app-footer');
   footers.forEach(footer => {
     footer.innerHTML = `
-      <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 3px;">An initiative of @VALIASS team</p>
+      <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 3px;">An initiative of @VALIASS team for AP Schools</p>
       <div class="support-links" style="display: flex; justify-content: center; align-items: center; gap: 8px;">
         <a href="tel:8985361991" class="support-link support-call" title="Call VALIASS Support">📞</a>
         <a href="https://wa.me/918985361991?text=Hello%20VALIASS%20team,%20I%20need%20assistance%20with%20AP%20Schools%20App." target="_blank" class="support-link support-whatsapp" title="WhatsApp VALIASS Support">
@@ -73,7 +73,7 @@ function appGoBack() {
 
 function appLogout() {
   if (confirm('Are you sure you want to log out of your session?')) {
-    localStorage.removeItem('ap_app_password');
+    // Preserve registration password so setup isn't triggered again; redirect to PIN login
     const isSubfolder = window.location.pathname.includes('/pages/');
     window.location.href = isSubfolder ? './login.html' : './pages/login.html';
   }
