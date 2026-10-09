@@ -165,9 +165,7 @@
 
         <div id="seal-display-section" class="seal-box hidden">
           <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px;">OFFICIAL HEAD MASTER VERIFICATION</p>
-          <div class="blue-seal-stamp" id="seal-stamp-preview">
-            <!-- Populated dynamically -->
-          </div>
+          <div class="blue-seal-stamp" id="seal-stamp-preview"></div>
           <p style="font-size: 0.7rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
         </div>
 
@@ -274,7 +272,6 @@
       const now = new Date();
       const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      // Seal with HM Name and School Name in round circle
       document.getElementById('seal-stamp-preview').innerHTML = `
         <span style="font-size: 0.52rem; font-weight: 700; line-height: 1.1;">${schoolName}</span>
         <span style="font-size: 0.55rem; font-weight: 800; margin: 3px 0; color: #0c5123;">★ HM: ${hmName} ★</span>
@@ -353,6 +350,13 @@
       ctx.fillStyle = '#0E7B3E';
       ctx.fillRect(0, 0, 800, 140);
 
+      let rendered = false;
+      const executeRender = () => {
+        if (rendered) return;
+        rendered = true;
+        renderPremiumPosterContent(ctx, canvas);
+      };
+
       const logoImg = new Image();
       logoImg.src = '../assets/icon-192.png';
       
@@ -374,26 +378,19 @@
         } catch (e) {
           console.log('Logo draw skipped:', e);
         }
-        renderPremiumPosterContent(ctx);
+        executeRender();
       };
 
       logoImg.onerror = function() {
-        renderPremiumPosterContent(ctx);
+        executeRender();
       };
       
       setTimeout(() => {
-        if (!window.posterRendered) {
-          window.posterRendered = true;
-          renderPremiumPosterContent(ctx);
-        }
-      }, 300);
+        executeRender();
+      }, 250);
     }
 
-    function renderPremiumPosterContent(ctx) {
-      if (window.posterExecutionLock) return;
-      window.posterExecutionLock = true;
-      setTimeout(() => { window.posterExecutionLock = false; }, 1000);
-
+    function renderPremiumPosterContent(ctx, canvas) {
       ctx.fillStyle = '#FFFFFF';
       ctx.font = 'bold 26px "Playfair Display", serif';
       ctx.textAlign = 'left';
