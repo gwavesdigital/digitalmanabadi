@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · Initial Setup</title>
+
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <header class="app-header"></header>
+
+    <main class="app-view">
+      <div class="card">
+        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-darker); margin-bottom: 4px;">School Registration Setup</h2>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px;">Authorized device configuration by VALIASS team.</p>
+
+        <form id="setup-form" onsubmit="handleInitialSetup(event)" class="form-vertical">
+          <div class="form-group">
+            <label for="district">District</label>
+            <select id="district" required>
+              <option value="" disabled selected>-- Select District --</option>
+              <option value="Alluri Sitharama Raju">Alluri Sitharama Raju</option>
+              <option value="Anakapalli">Anakapalli</option>
+              <option value="Ananthapuramu">Ananthapuramu</option>
+              <option value="Annamayya">Annamayya</option>
+              <option value="Bapatla">Bapatla</option>
+              <option value="Chittoor">Chittoor</option>
+              <option value="Dr. B.R. Ambedkar Konaseema">Dr. B.R. Ambedkar Konaseema</option>
+              <option value="East Godavari">East Godavari</option>
+              <option value="Eluru">Eluru</option>
+              <option value="Guntur">Guntur</option>
+              <option value="Kakinada">Kakinada</option>
+              <option value="Krishna">Krishna</option>
+              <option value="Kurnool">Kurnool</option>
+              <option value="Nandyal">Nandyal</option>
+              <option value="NTR">NTR</option>
+              <option value="Palnadu">Palnadu</option>
+              <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+              <option value="Prakasam">Prakasam</option>
+              <option value="Sri Potti Sriramulu Nellore">Sri Potti Sriramulu Nellore</option>
+              <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+              <option value="Srikakulam">Srikakulam</option>
+              <option value="Tirupati">Tirupati</option>
+              <option value="Visakhapatnam">Visakhapatnam</option>
+              <option value="Vizianagaram">Vizianagaram</option>
+              <option value="West Godavari">West Godavari</option>
+              <option value="YSR Kadapa">YSR Kadapa</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mandal">Mandal</label>
+            <input type="text" id="mandal" placeholder="Enter mandal name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="village">Village / Town</label>
+            <input type="text" id="village" placeholder="Enter village name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="school-name">School Name</label>
+            <input type="text" id="school-name" placeholder="Enter school name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="hm-name">Head Master Name</label>
+            <input type="text" id="hm-name" placeholder="Enter head master name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="new-password">Set 4-Digit App PIN</label>
+            <input type="password" id="new-password" placeholder="Enter 4-digit numbers only" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required />
+          </div>
+
+          <div class="form-group">
+            <label for="secret-code">VALIASS Secret Code</label>
+            <input type="password" id="secret-code" placeholder="Enter team secret code" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Complete Setup →
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <footer class="app-footer"></footer>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function handleInitialSetup(e) {
+      e.preventDefault();
+      const district = document.getElementById('district').value;
+      const mandal = document.getElementById('mandal').value;
+      const village = document.getElementById('village').value;
+      const schoolName = document.getElementById('school-name').value;
+      const hmName = document.getElementById('hm-name').value;
+      const password = document.getElementById('new-password').value;
+      const secretCode = document.getElementById('secret-code').value.trim();
+
+      if (!verifySchoolActivation(secretCode)) {
+        alert('Invalid VALIASS Secret Code. Please check the code.');
+        return;
+      }
+
+      localStorage.setItem('ap_district', district);
+      localStorage.setItem('ap_mandal', mandal);
+      localStorage.setItem('ap_village', village);
+      localStorage.setItem('ap_school_name', schoolName);
+      localStorage.setItem('ap_hm_name', hmName);
+      localStorage.setItem('ap_app_password', password);
+      localStorage.setItem('ap_is_installed', 'true');
+
+      window.location.href = './login.html';
+    }
+  </script>
+</body>
+</html>

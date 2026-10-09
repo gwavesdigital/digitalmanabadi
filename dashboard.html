@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · Dashboard</title>
+
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css" />
+  
+  <style>
+    .cinematic-dashboard-hero {
+      background: linear-gradient(135deg, rgba(14,123,62,0.12) 0%, rgba(244,196,48,0.1) 100%);
+      border: 1.5px solid rgba(14, 123, 62, 0.2);
+      border-radius: 20px;
+      padding: 22px 16px;
+      text-align: center;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 30px rgba(14, 123, 62, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .cinematic-dashboard-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-gold));
+    }
+
+    .ribbon-container {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1.5px solid rgba(14, 123, 62, 0.25);
+      border-radius: 14px;
+      padding: 10px 14px;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .ribbon-text {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <header class="app-header"></header>
+
+    <main class="app-view" style="justify-content: center;">
+      <!-- Cinematic Dashboard Hero Card -->
+      <div class="cinematic-dashboard-hero">
+        <div class="hero-emblem" style="width: 72px; height: 72px; margin: 0 auto 12px auto; box-shadow: 0 4px 15px rgba(244, 196, 48, 0.35);">
+          <img src="../assets/icon-192.png" alt="Logo" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+        </div>
+
+        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.3rem; margin-bottom: 6px;">
+          Welcome Dear <span id="disp-school" style="color: var(--primary-green);">School</span> Team! 🌟
+        </h2>
+        <p style="font-size: 0.76rem; color: var(--text-muted);">
+          📍 <span id="disp-location">Andhra Pradesh</span> · HM: <span id="disp-hm" style="font-weight: 600;">--</span>
+        </p>
+      </div>
+
+      <!-- Moving Notification Ribbon (Marquee) -->
+      <div class="ribbon-container" title="Official Announcements">
+        <div class="ribbon-text">
+          📢 ప్రభుత్వ పాఠశాలల డిజిటల్ ఈ-డైరీ కి స్వాగతం! · Welcome to AP Schools E-Diary System · An initiative of VALIASS team · Have a wonderful and productive teaching day! 🍎✨
+        </div>
+      </div>
+
+      <!-- Start the Day Primary Action Button -->
+      <button onclick="startTheDay()" class="btn btn-primary btn-xl" style="font-size: 1.05rem; padding: 16px; border-radius: 14px; box-shadow: 0 8px 25px rgba(14, 123, 62, 0.35);">
+        ☀️ Start the Day →
+      </button>
+    </main>
+
+    <footer class="app-footer"></footer>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('ap_app_password')) {
+        window.location.href = './login.html';
+        return;
+      }
+
+      const schoolName = localStorage.getItem('ap_school_name') || 'AP Model School';
+      const district = localStorage.getItem('ap_district') || '';
+      const mandal = localStorage.getItem('ap_mandal') || '';
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+
+      document.getElementById('disp-school').textContent = schoolName;
+      document.getElementById('disp-location').textContent = `${district} (${mandal})`;
+      document.getElementById('disp-hm').textContent = hmName;
+    });
+
+    function startTheDay() {
+      alert('☀️ Starting your day! Ready for E-Diary entries and daily school management.');
+    }
+  </script>
+</body>
+</html>
