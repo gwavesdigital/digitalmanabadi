@@ -124,8 +124,11 @@
       localStorage.setItem('ap_hm_name', hmName);
       localStorage.setItem('ap_app_password', password);
       localStorage.setItem('ap_is_installed', 'true');
+      localStorage.removeItem('ap_failed_attempts');
+      localStorage.removeItem('ap_lockout_time');
 
-      window.location.href = './login.html';
+      alert('School setup completed successfully!');
+      window.location.href = './dashboard.html';
     }
   </script>
 </body>
