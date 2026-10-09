@@ -12,12 +12,29 @@
   <link rel="stylesheet" href="../style.css" />
   
   <style>
+    .premium-hero-card {
+      background: linear-gradient(135deg, rgba(14,123,62,0.1) 0%, rgba(244,196,48,0.08) 100%);
+      border: 1.5px solid rgba(14, 123, 62, 0.2);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(14, 123, 62, 0.05);
+    }
     .subject-row {
       display: grid;
       grid-template-columns: 110px 1fr;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      background: var(--surface-alt);
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: border-color 0.2s ease;
+    }
+    .subject-row:focus-within {
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px rgba(14, 123, 62, 0.08);
     }
     @media (max-width: 360px) {
       .subject-row {
@@ -26,45 +43,47 @@
     }
     .seal-box {
       border: 2px dashed #1a73e8;
-      background: rgba(26, 115, 232, 0.04);
-      border-radius: 12px;
-      padding: 14px;
+      background: linear-gradient(135deg, rgba(26, 115, 232, 0.04) 0%, rgba(26, 115, 232, 0.01) 100%);
+      border-radius: 16px;
+      padding: 16px;
       text-align: center;
       position: relative;
-      margin: 14px 0;
+      margin: 16px 0;
+      box-shadow: 0 4px 15px rgba(26, 115, 232, 0.05);
     }
     .blue-seal-stamp {
-      width: 85px;
-      height: 85px;
-      border: 3px solid #1a73e8;
+      width: 90px;
+      height: 90px;
+      border: 3.5px solid #1a73e8;
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 8px auto;
+      margin: 10px auto;
       color: #1a73e8;
       font-family: 'Playfair Display', serif;
       font-weight: 700;
       font-size: 0.65rem;
       text-transform: uppercase;
-      box-shadow: 0 0 10px rgba(26,115,232,0.2);
-      transform: rotate(-8deg);
-      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 12px rgba(26,115,232,0.25);
+      transform: rotate(-6deg);
+      background: rgba(255,255,255,0.95);
     }
     .whatsapp-preview-box {
       background: #E8F8EC;
-      border: 1px solid rgba(32, 186, 90, 0.3);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.76rem;
+      border: 1.5px solid rgba(32, 186, 90, 0.35);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.78rem;
       color: #0c5123;
       white-space: pre-wrap;
       font-family: monospace;
       margin-top: 10px;
-      margin-bottom: 14px;
-      max-height: 150px;
+      margin-bottom: 16px;
+      max-height: 160px;
       overflow-y: auto;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
     }
   </style>
 </head>
@@ -79,31 +98,41 @@
     <header class="app-header"></header>
 
     <main class="app-view">
-      <div class="card">
-        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.25rem; margin-bottom: 4px;">
-          📖 Classroom E-Diary
-        </h2>
-        <p style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 16px;">
-          Record daily class lesson plans, homework, and updates.
-        </p>
+      <!-- Premium Hero Header Card -->
+      <div class="premium-hero-card">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; background: var(--primary-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid rgba(14,123,62,0.2);">
+            📖
+          </div>
+          <div>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.2rem; margin-bottom: 2px;">
+              Classroom E-Diary
+            </h2>
+            <p style="font-size: 0.74rem; color: var(--text-muted);">
+              Record daily lesson plans, subjects, and classroom updates.
+            </p>
+          </div>
+        </div>
+      </div>
 
+      <div class="card" style="border-radius: 18px; padding: 20px;">
         <form id="ediary-form" class="form-vertical" onsubmit="event.preventDefault();">
           <!-- Date & Teacher Name -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group" style="margin-bottom: 0;">
               <label for="diary-date">Date</label>
-              <input type="date" id="diary-date" required />
+              <input type="date" id="diary-date" required style="border-radius: 10px;" />
             </div>
             <div class="form-group" style="margin-bottom: 0;">
               <label for="teacher-name">Teacher Name</label>
-              <input type="text" id="teacher-name" placeholder="Enter your name" required />
+              <input type="text" id="teacher-name" placeholder="Enter your name" required style="border-radius: 10px;" />
             </div>
           </div>
 
           <!-- Class Selection -->
-          <div class="form-group" style="margin-top: 10px;">
+          <div class="form-group" style="margin-top: 12px;">
             <label for="class-select">Select Class</label>
-            <select id="class-select" onchange="loadClassSubjects()" required>
+            <select id="class-select" onchange="loadClassSubjects()" required style="border-radius: 10px; font-weight: 600;">
               <option value="" disabled selected>-- Choose Class --</option>
               <option value="1">Class 1</option>
               <option value="2">Class 2</option>
@@ -114,32 +143,32 @@
           </div>
 
           <!-- Dynamic Subjects Container -->
-          <div style="margin-top: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label style="font-weight: 600; font-size: 0.8rem; color: var(--primary-darker);">Subjects & Topics Covered</label>
-              <button type="button" onclick="addCustomSubjectRow()" class="header-btn" style="background: var(--primary-light); color: var(--primary-dark); border-color: rgba(14,123,62,0.3); font-size: 0.68rem; padding: 3px 8px;">
+          <div style="margin-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker);">Subjects & Topics Covered</label>
+              <button type="button" onclick="addCustomSubjectRow()" class="header-btn" style="background: var(--primary-light); color: var(--primary-dark); border-color: rgba(14,123,62,0.3); font-size: 0.7rem; padding: 5px 10px; border-radius: 8px;">
                 ➕ Add Subject
               </button>
             </div>
             <div id="subjects-container">
-              <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 12px; background: var(--surface-alt); border-radius: 8px; border: 1px dashed var(--border-color);">
-                Please select a class above to load subjects.
+              <p style="font-size: 0.76rem; color: var(--text-muted); text-align: center; padding: 18px; background: var(--surface-alt); border-radius: 12px; border: 1.5px dashed var(--border-color);">
+                Please select a class above to load subjects automatically.
               </p>
             </div>
           </div>
 
           <!-- Class Notes Box -->
-          <div class="form-group" style="margin-top: 6px;">
-            <label for="diary-notes">General Class Notes / Remarks</label>
-            <textarea id="diary-notes" rows="3" placeholder="Enter any special remarks, student attendance notes, or activities..."></textarea>
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="diary-notes">General Class Notes / Remarks (Optional)</label>
+            <textarea id="diary-notes" rows="3" placeholder="Enter special remarks or activities (leave blank if none)..." style="border-radius: 10px;"></textarea>
           </div>
 
-          <!-- Action Buttons 1: Save/Clear & Get Seal -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
-            <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1px solid var(--border-color); font-size: 0.85rem; padding: 10px;">
+          <!-- Action Buttons 1: Save & Get Seal -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+            <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px;">
               💾 Save / Clear
             </button>
-            <button type="button" onclick="generateHMSeal()" class="btn btn-primary" style="font-size: 0.85rem; padding: 10px;">
+            <button type="button" onclick="generateHMSeal()" class="btn btn-primary" style="font-size: 0.85rem; padding: 12px; border-radius: 12px;">
               🔏 Get HM Seal
             </button>
           </div>
@@ -147,27 +176,27 @@
 
         <!-- HM Seal Preview Box (Hidden initially) -->
         <div id="seal-display-section" class="seal-box hidden">
-          <p style="font-size: 0.72rem; font-weight: 600; color: #1a73e8; margin-bottom: 2px;">APPROVED & VERIFIED BY HEAD MASTER</p>
+          <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px; letter-spacing: 0.5px;">OFFICIAL HEAD MASTER VERIFICATION</p>
           <div class="blue-seal-stamp">
-            <span>APPROVED</span>
-            <span style="font-size: 0.5rem; margin-top: 2px;">AP SCHOOLS</span>
-            <span style="font-size: 0.45rem;">VALIASS</span>
+            <span style="font-size: 0.6rem;">GOVT. A.P.</span>
+            <span style="font-size: 0.5rem; margin-top: 2px;">★ VERIFIED ★</span>
+            <span style="font-size: 0.45rem;">OFFICIAL SEAL</span>
           </div>
-          <p style="font-size: 0.75rem; color: var(--text-color); font-weight: 600;" id="seal-hm-name">HM: --</p>
-          <p style="font-size: 0.68rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
+          <p style="font-size: 0.78rem; color: var(--text-color); font-weight: 700;" id="seal-hm-name">HM: --</p>
+          <p style="font-size: 0.7rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
         </div>
 
-        <!-- Action Buttons 2: WhatsApp Share & Create Poster -->
-        <div id="post-seal-actions" class="hidden" style="margin-top: 14px;">
-          <label style="font-weight: 600; font-size: 0.8rem; color: var(--primary-darker); margin-bottom: 4px; display: block;">WhatsApp Formatted Message Preview:</label>
+        <!-- Post-Seal Actions -->
+        <div id="post-seal-actions" class="hidden" style="margin-top: 16px;">
+          <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker); margin-bottom: 6px; display: block;">WhatsApp Formatted Message Preview:</label>
           <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
 
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.9rem; padding: 12px; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); font-weight: 700;">
               💬 Share to WhatsApp Group
             </button>
-            <button type="button" onclick="createDiaryPoster()" class="btn btn-primary" style="font-size: 0.9rem; padding: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%);">
-              🎨 Create & Download Diary Poster (PNG)
+            <button type="button" onclick="createDiaryPoster()" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%); font-weight: 700;">
+              🎨 Create & Download Premium Poster (PNG)
             </button>
           </div>
         </div>
@@ -187,11 +216,9 @@
         window.location.href = './login.html';
         return;
       }
-      // Set today's date automatically
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('diary-date').value = today;
 
-      // Restore saved teacher name if any
       const savedTeacher = localStorage.getItem('ap_last_teacher') || '';
       if (savedTeacher) {
         document.getElementById('teacher-name').value = savedTeacher;
@@ -210,11 +237,11 @@
         defaultSubjects = ['Telugu', 'English', 'Maths', 'EVS'];
       }
 
-      defaultSubjects.forEach((sub, idx) => {
+      defaultSubjects.forEach((sub) => {
         container.innerHTML += `
           <div class="subject-row">
-            <input type="text" value="${sub}" readonly style="background: var(--surface-alt); font-weight: 600; font-size: 0.85rem;" />
-            <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson covered..." required />
+            <input type="text" value="${sub}" readonly style="background: var(--surface); font-weight: 700; font-size: 0.85rem; border: none; color: var(--primary-dark);" />
+            <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson covered..." required style="border-radius: 8px; padding: 8px 10px;" />
           </div>
         `;
       });
@@ -225,10 +252,10 @@
       const rowDiv = document.createElement('div');
       rowDiv.className = 'subject-row';
       rowDiv.innerHTML = `
-        <input type="text" class="subject-name-input" placeholder="Subject Name" required style="font-weight: 600; font-size: 0.85rem;" />
-        <div style="display: flex; gap: 4px;">
-          <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson..." required style="flex:1;" />
-          <button type="button" onclick="this.parentElement.parentElement.remove()" class="header-btn" style="background: #ffebee; color: #c62828; border-color: rgba(198,40,40,0.3); padding: 0 8px;">❌</button>
+        <input type="text" class="subject-name-input" placeholder="Subject Name" required style="font-weight: 700; font-size: 0.85rem; border-radius: 8px; padding: 8px 10px;" />
+        <div style="display: flex; gap: 6px;">
+          <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson..." required style="flex:1; border-radius: 8px; padding: 8px 10px;" />
+          <button type="button" onclick="this.parentElement.parentElement.remove()" class="header-btn" style="background: #ffebee; color: #c62828; border-color: rgba(198,40,40,0.3); padding: 0 10px; border-radius: 8px;">❌</button>
         </div>
       `;
       container.appendChild(rowDiv);
@@ -237,7 +264,7 @@
     function saveDiaryForm() {
       const teacher = document.getElementById('teacher-name').value;
       if (teacher) localStorage.setItem('ap_last_teacher', teacher);
-      alert('E-Diary form data saved locally on this device!');
+      alert('E-Diary form data saved successfully!');
     }
 
     function generateHMSeal() {
@@ -263,7 +290,6 @@
       document.getElementById('post-seal-actions').classList.remove('hidden');
       isSealGenerated = true;
 
-      // Build WhatsApp preview text
       buildWhatsAppText(hmName, timeStr);
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
@@ -273,7 +299,7 @@
       const date = document.getElementById('diary-date').value;
       const teacher = document.getElementById('teacher-name').value;
       const classNum = document.getElementById('class-select').value;
-      const notes = document.getElementById('diary-notes').value || 'None';
+      const notes = document.getElementById('diary-notes').value.trim();
 
       let subjectsText = '';
       const rows = document.querySelectorAll('.subject-row');
@@ -284,14 +310,19 @@
         subjectsText += `• *${subName}*: ${topic}\n`;
       });
 
+      let notesSection = '';
+      if (notes !== '') {
+        notesSection = `📝 *Notes*: ${notes}\n\n`;
+      }
+
       const message = `🏫 *AP SCHOOLS E-DIARY* 🍎\n` +
         `📍 *School*: ${school}\n` +
         `📅 *Date*: ${date} | *Class*: Class ${classNum}\n` +
         `👨‍🏫 *Teacher*: ${teacher}\n\n` +
         `📚 *Topics Covered*:\n${subjectsText}\n` +
-        `📝 *Notes*: ${notes}\n\n` +
+        `${notesSection}` +
         `🔏 *HM Approved*: ${hmName} (${timeStr})\n` +
-        `✨ _An initiative of VALIASS team_`;
+        `✨ An initiative of @VALIASS team for AP Schools`;
 
       document.getElementById('whatsapp-text-preview').textContent = message;
       window.whatsappShareMessage = message;
@@ -312,41 +343,70 @@
         return;
       }
 
-      // Create a clean canvas to render the premium PNG poster
       const canvas = document.createElement('canvas');
       canvas.width = 800;
-      canvas.height = 1130; // 1:sqrt(2) aspect ratio poster
+      canvas.height = 1130;
       const ctx = canvas.getContext('2d');
 
-      // 1. Background gradient
+      // 1. Premium Background gradient
       const bgGrad = ctx.createLinearGradient(0, 0, 800, 1130);
       bgGrad.addColorStop(0, '#FFFFFF');
       bgGrad.addColorStop(1, '#F2FAF5');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, 800, 1130);
 
-      // 2. Top Header banner
+      // 2. Rich Emerald Header Banner
       ctx.fillStyle = '#0E7B3E';
-      ctx.fillRect(0, 0, 800, 130);
+      ctx.fillRect(0, 0, 800, 140);
 
-      // Header Title
+      const logoImg = new Image();
+      logoImg.crossOrigin = 'anonymous';
+      logoImg.src = '../assets/icon-192.png';
+      
+      logoImg.onload = function() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(70, 70, 42, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(logoImg, 28, 28, 84, 84);
+        ctx.restore();
+
+        ctx.strokeStyle = '#F4C430';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(70, 70, 42, 0, Math.PI * 2);
+        ctx.stroke();
+
+        renderPremiumPosterContent(ctx);
+      };
+
+      logoImg.onerror = function() {
+        renderPremiumPosterContent(ctx);
+      };
+    }
+
+    function renderPremiumPosterContent(ctx) {
+      // Header Title & Subtitle
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 28px "Playfair Display", serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('GOVERNMENT OF ANDHRA PRADESH', 400, 48);
-      ctx.font = '18px Inter, sans-serif';
-      ctx.fillText('AP Schools Digital E-Diary & Management System', 400, 82);
+      ctx.font = 'bold 26px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('GOVERNMENT OF ANDHRA PRADESH', 135, 55);
+      
+      ctx.font = '16px Inter, sans-serif';
+      ctx.fillStyle = '#E6F4EC';
+      ctx.fillText('AP Schools Digital Classroom E-Diary System', 135, 88);
 
-      // Gold Accent line
+      // Gold Accent Ribbon
       ctx.fillStyle = '#F4C430';
-      ctx.fillRect(0, 130, 800, 6);
+      ctx.fillRect(0, 140, 800, 6);
 
-      // 3. School Details Box
+      // 3. School Details Box (Card)
       ctx.fillStyle = '#FFFFFF';
       ctx.strokeStyle = '#D2DCD6';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.roundRect(50, 160, 700, 120, 12);
+      ctx.roundRect(50, 170, 700, 115, 14);
       ctx.fill();
       ctx.stroke();
 
@@ -356,23 +416,26 @@
       const village = localStorage.getItem('ap_village') || '';
 
       ctx.fillStyle = '#063D1E';
-      ctx.font = 'bold 24px "Playfair Display", serif';
-      ctx.textAlign = 'left';
-      ctx.fillText(school, 80, 205);
+      ctx.font = 'bold 22px "Playfair Display", serif';
+      ctx.fillText(school, 80, 212);
 
       ctx.fillStyle = '#6B7A72';
-      ctx.font = '15px Inter, sans-serif';
-      ctx.fillText(`Location: ${village}, ${mandal} Mandal, ${district} Dist.`, 80, 238);
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillText(`Location: ${village}, ${mandal} Mandal, ${district} Dist.`, 80, 242);
 
       const date = document.getElementById('diary-date').value;
       const classNum = document.getElementById('class-select').value;
       const teacher = document.getElementById('teacher-name').value;
       ctx.fillText(`Date: ${date}   |   Class: Class ${classNum}   |   Teacher: ${teacher}`, 80, 268);
 
-      // 4. Subjects Card
+      // 4. Subjects Card (Dynamic height depending on notes)
+      const notes = document.getElementById('diary-notes').value.trim();
+      const hasNotes = notes !== '';
+      const contentCardHeight = hasNotes ? 400 : 490;
+
       ctx.fillStyle = '#FFFFFF';
       ctx.beginPath();
-      ctx.roundRect(50, 305, 700, 360, 12);
+      ctx.roundRect(50, 305, 700, contentCardHeight, 14);
       ctx.fill();
       ctx.stroke();
 
@@ -382,7 +445,8 @@
 
       ctx.fillStyle = '#14201A';
       ctx.font = '16px Inter, sans-serif';
-      let yPos = 385;
+      
+      let yPos = 390;
       const rows = document.querySelectorAll('.subject-row');
       rows.forEach(row => {
         const inputs = row.querySelectorAll('input');
@@ -395,80 +459,84 @@
         
         ctx.fillStyle = '#14201A';
         ctx.font = '16px Inter, sans-serif';
-        ctx.fillText(topic, 230, yPos);
+        ctx.fillText(topic, 220, yPos);
         
         yPos += 38;
       });
 
-      // 5. Notes Card
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath();
-      ctx.roundRect(50, 690, 700, 130, 12);
-      ctx.fill();
-      ctx.stroke();
+      // Conditional Notes Box on Poster (Only renders if user entered notes)
+      let sealBoxY = 815;
+      if (hasNotes) {
+        ctx.fillStyle = '#F2FAF5';
+        ctx.beginPath();
+        ctx.roundRect(80, 715, 640, 75, 10);
+        ctx.fill();
 
-      ctx.fillStyle = '#0E7B3E';
-      ctx.font = 'bold 18px "Playfair Display", serif';
-      ctx.fillText('📝 General Notes / Remarks', 80, 725);
+        ctx.fillStyle = '#0E7B3E';
+        ctx.font = 'bold 14px "Playfair Display", serif';
+        ctx.fillText('📝 Notes / Remarks:', 100, 740);
 
-      ctx.fillStyle = '#14201A';
-      ctx.font = '15px Inter, sans-serif';
-      const notes = document.getElementById('diary-notes').value || 'No special remarks recorded for today.';
-      // Simple text wrap for notes
-      ctx.fillText(notes.substring(0, 85), 80, 760);
-      if (notes.length > 85) {
-        ctx.fillText(notes.substring(85, 170), 80, 785);
+        ctx.fillStyle = '#14201A';
+        ctx.font = '14px Inter, sans-serif';
+        ctx.fillText(notes.substring(0, 85), 100, 768);
+        sealBoxY = 815;
+      } else {
+        sealBoxY = 730;
       }
 
-      // 6. HM Seal & Approval Stamp Section (Cinematic View)
+      // 5. Official HM Seal & Stamp Box (Cinematic View)
       ctx.fillStyle = '#F2FAF5';
       ctx.strokeStyle = 'rgba(14,123,62,0.2)';
       ctx.beginPath();
-      ctx.roundRect(50, 840, 700, 200, 12);
+      ctx.roundRect(50, sealBoxY, 700, 215, 14);
       ctx.fill();
       ctx.stroke();
 
-      // Draw Blue Seal Stamp on right
+      // Draw Professional Blue Official Seal Stamp on right
       ctx.save();
-      ctx.translate(620, 940);
-      ctx.rotate(-0.1);
+      ctx.translate(620, sealBoxY + 108);
+      ctx.rotate(-0.08);
+      
       ctx.strokeStyle = '#1a73e8';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.arc(0, 0, 55, 0, Math.PI * 2);
+      ctx.arc(0, 0, 58, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, 48, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.fillStyle = '#1a73e8';
-      ctx.font = 'bold 11px "Playfair Display", serif';
+      ctx.font = 'bold 10px "Playfair Display", serif';
       ctx.textAlign = 'center';
-      ctx.fillText('APPROVED', 0, -12);
-      ctx.font = 'bold 9px Inter, sans-serif';
-      ctx.fillText('AP SCHOOLS', 0, 8);
-      ctx.font = 'bold 8px Inter, sans-serif';
-      ctx.fillText('VALIASS', 0, 24);
+      ctx.fillText('GOVT. OF A.P.', 0, -16);
+      ctx.font = 'bold 11px Inter, sans-serif';
+      ctx.fillText('★ VERIFIED ★', 0, 4);
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.fillText('OFFICIAL SEAL', 0, 22);
       ctx.restore();
 
-      // HM Text on left
       ctx.fillStyle = '#063D1E';
       ctx.font = 'bold 18px "Playfair Display", serif';
       ctx.textAlign = 'left';
-      ctx.fillText('Head Master Seal & Verification', 80, 880);
+      ctx.fillText('Head Master Verification & Official Seal', 80, sealBoxY + 40);
 
       ctx.fillStyle = '#14201A';
-      ctx.font = '16px Inter, sans-serif';
+      ctx.font = '15px Inter, sans-serif';
       const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
       const timeStr = document.getElementById('seal-timestamp').textContent.replace('Approved On: ', '');
-      ctx.fillText(`Head Master: ${hmName}`, 80, 920);
-      ctx.fillText(`Verification Time: ${timeStr}`, 80, 955);
-      ctx.fillText('Status: Digitally Verified & Approved', 80, 990);
+      ctx.fillText(`Head Master Name: ${hmName}`, 80, sealBoxY + 85);
+      ctx.fillText(`Approval Timestamp: ${timeStr}`, 80, sealBoxY + 120);
+      ctx.fillText('Status: Digitally Verified & Approved by School Authority', 80, sealBoxY + 155);
 
-      // 7. Footer brand
+      // 6. Footer brand
       ctx.fillStyle = '#6B7A72';
       ctx.font = '13px Inter, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('An initiative of @VALIASS team · AP Schools Portal', 400, 1080);
+      ctx.fillText('An initiative of @VALIASS team for AP Schools', 400, 1075);
 
-      // Trigger download
       const link = document.createElement('a');
       link.download = `AP-Schools-EDiary-${date}.png`;
       link.href = canvas.toDataURL('image/png');
