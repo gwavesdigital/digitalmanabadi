@@ -148,7 +148,6 @@
             <textarea id="diary-notes" rows="3" placeholder="Enter special remarks or activities (leave blank if none)..." style="border-radius: 10px;"></textarea>
           </div>
 
-          <!-- Separate Save & Clear Buttons -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
             <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
               💾 Save Data
@@ -174,7 +173,10 @@
           <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
 
           <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; font-weight: 700;">
+            <button type="button" onclick="copyFormattedMessage()" class="btn" style="background: #e2f0d9; color: #274e13; border: 1px solid #b6d7a8; font-size: 0.95rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              📋 Copy Formatted Message
+            </button>
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); font-weight: 700;">
               💬 Share to WhatsApp Group
             </button>
             <button type="button" onclick="createDiaryPoster()" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%); font-weight: 700;">
@@ -321,6 +323,18 @@
       window.whatsappShareMessage = message;
     }
 
+    function copyFormattedMessage() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      navigator.clipboard.writeText(window.whatsappShareMessage || '').then(() => {
+        alert('Formatted message copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy message.');
+      });
+    }
+
     function shareToWhatsApp() {
       if (!isSealGenerated) {
         alert('Please get the Head Master Seal first.');
@@ -350,44 +364,26 @@
       ctx.fillStyle = '#0E7B3E';
       ctx.fillRect(0, 0, 800, 140);
 
-      let rendered = false;
-      const executeRender = () => {
-        if (rendered) return;
-        rendered = true;
-        renderPremiumPosterContent(ctx, canvas);
-      };
+      // Vector Emblem (Zero CORS failures)
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(70, 70, 42, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#F4C430';
+      ctx.stroke();
+      ctx.restore();
 
-      const logoImg = new Image();
-      logoImg.src = '../assets/icon-192.png';
-      
-      logoImg.onload = function() {
-        try {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(70, 70, 42, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(logoImg, 28, 28, 84, 84);
-          ctx.restore();
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 13px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('AP SCHOOLS', 70, 65);
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = '#0E7B3E';
+      ctx.fillText('GOVT. OF A.P.', 70, 82);
 
-          ctx.strokeStyle = '#F4C430';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.arc(70, 70, 42, 0, Math.PI * 2);
-          ctx.stroke();
-        } catch (e) {
-          console.log('Logo draw skipped:', e);
-        }
-        executeRender();
-      };
-
-      logoImg.onerror = function() {
-        executeRender();
-      };
-      
-      setTimeout(() => {
-        executeRender();
-      }, 250);
+      renderPremiumPosterContent(ctx, canvas);
     }
 
     function renderPremiumPosterContent(ctx, canvas) {
@@ -490,7 +486,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Render Blue Official Stamp on Canvas with School & HM Name inside
       ctx.save();
       ctx.translate(620, sealBoxY + 108);
       ctx.rotate(-0.08);
