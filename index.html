@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · E-Diary & Management System</title>
+
+  <!-- Favicon & PWA Icons -->
+  <link rel="icon" href="./assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Social Media Preview -->
+  <meta property="og:title" content="AP Schools E-Diary & Management System">
+  <meta property="og:description" content="Official digital assistant for Teachers, Cooks, and Head Masters across Andhra Pradesh. An initiative of VALIASS team.">
+  <meta property="og:image" content="./assets/og-image.png">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <!-- Background FX -->
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    
+    <!-- Header (Dynamically injected via app.js) -->
+    <header class="app-header"></header>
+
+    <!-- Main Content -->
+    <main class="app-view home-view">
+      
+      <!-- Premium Circular Center Emblem Logo -->
+      <div class="hero-emblem">
+        <img src="./assets/icon-192.png" alt="AP Schools Logo" />
+      </div>
+
+      <span class="hero-subtitle">Government of Andhra Pradesh</span>
+      
+      <h2 class="hero-title">DIGITAL MANA BADI </h2>
+      
+      <p class="hero-desc">
+        A Pilot Digital Initiative MPMP School No.1,Dagguluru Under the Leadership of Headmaster  Sri V. Srinivasa Raju.
+      </p>
+
+      <button onclick="routerLaunch()" class="btn btn-primary btn-xl hero-btn-action">
+        Get Started →
+      </button>
+
+      <!-- Model School Showcase Photo Card (Placed below Get Started button) -->
+      <div class="school-showcase-card">
+        <img src="./assets/model-school.jpg" alt="AP Model School" class="school-showcase-img" />
+        <div class="school-showcase-overlay">
+          <span>🌟 Mana Badi · Nadu-Nedu</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer (Injected via app.js) -->
+    <footer class="app-footer"></footer>
+
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    function routerLaunch() {
+      const savedPass = localStorage.getItem('ap_app_password');
+      if (savedPass && savedPass.trim() !== '') {
+        window.location.href = './pages/login.html';
+      } else {
+        window.location.href = './pages/setup.html';
+      }
+    }
+  </script>
+</body>
+</html>
