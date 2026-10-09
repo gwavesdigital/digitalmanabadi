@@ -19,9 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!isHomePage) {
         actionsHTML += `<button onclick="appGoBack()" class="header-btn" title="Go Back">⬅️ Back</button>`;
+        actionsHTML += `<a href="${homePath}" class="header-btn" title="Home">🏠 Home</a>`;
       }
-
-      actionsHTML += `<a href="${homePath}" class="header-btn" title="Home">🏠 Home</a>`;
 
       if (!isLoggedOut && !isHomePage) {
         actionsHTML += `<button onclick="appLogout()" class="header-btn" title="Logout">🚪 Logout</button>`;
@@ -104,7 +103,7 @@ function verifySchoolActivation(secretCode) {
   return cleanCode === expectedKey || cleanCode === dynamicKey || cleanCode.endsWith("@533340");
 }
 
-function generateResetKey() {
+generateResetKey = function() {
   const now = new Date();
   const dd = String(now.getDate()).padStart(2, '0');
   const mm = String(now.getMonth() + 1).padStart(2, '0');
