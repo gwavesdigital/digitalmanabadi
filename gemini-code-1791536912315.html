@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · Classroom E-Diary</title>
+
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css" />
+  
+  <style>
+    .subject-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 360px) {
+      .subject-row {
+        grid-template-columns: 90px 1fr;
+      }
+    }
+    .seal-box {
+      border: 2px dashed #1a73e8;
+      background: rgba(26, 115, 232, 0.04);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      position: relative;
+      margin: 14px 0;
+    }
+    .blue-seal-stamp {
+      width: 85px;
+      height: 85px;
+      border: 3px solid #1a73e8;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 8px auto;
+      color: #1a73e8;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(26,115,232,0.2);
+      transform: rotate(-8deg);
+      background: rgba(255,255,255,0.9);
+    }
+    .whatsapp-preview-box {
+      background: #E8F8EC;
+      border: 1px solid rgba(32, 186, 90, 0.3);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.76rem;
+      color: #0c5123;
+      white-space: pre-wrap;
+      font-family: monospace;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <header class="app-header"></header>
+
+    <main class="app-view">
+      <div class="card">
+        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.25rem; margin-bottom: 4px;">
+          📖 Classroom E-Diary
+        </h2>
+        <p style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 16px;">
+          Record daily class lesson plans, homework, and updates.
+        </p>
+
+        <form id="ediary-form" class="form-vertical" onsubmit="event.preventDefault();">
+          <!-- Date & Teacher Name -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="diary-date">Date</label>
+              <input type="date" id="diary-date" required />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="teacher-name">Teacher Name</label>
+              <input type="text" id="teacher-name" placeholder="Enter your name" required />
+            </div>
+          </div>
+
+          <!-- Class Selection -->
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="class-select">Select Class</label>
+            <select id="class-select" onchange="loadClassSubjects()" required>
+              <option value="" disabled selected>-- Choose Class --</option>
+              <option value="1">Class 1</option>
+              <option value="2">Class 2</option>
+              <option value="3">Class 3</option>
+              <option value="4">Class 4</option>
+              <option value="5">Class 5</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Subjects Container -->
+          <div style="margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="font-weight: 600; font-size: 0.8rem; color: var(--primary-darker);">Subjects & Topics Covered</label>
+              <button type="button" onclick="addCustomSubjectRow()" class="header-btn" style="background: var(--primary-light); color: var(--primary-dark); border-color: rgba(14,123,62,0.3); font-size: 0.68rem; padding: 3px 8px;">
+                ➕ Add Subject
+              </button>
+            </div>
+            <div id="subjects-container">
+              <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 12px; background: var(--surface-alt); border-radius: 8px; border: 1px dashed var(--border-color);">
+                Please select a class above to load subjects.
+              </p>
+            </div>
+          </div>
+
+          <!-- Class Notes Box -->
+          <div class="form-group" style="margin-top: 6px;">
+            <label for="diary-notes">General Class Notes / Remarks</label>
+            <textarea id="diary-notes" rows="3" placeholder="Enter any special remarks, student attendance notes, or activities..."></textarea>
+          </div>
+
+          <!-- Action Buttons 1: Save/Clear & Get Seal -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
+            <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1px solid var(--border-color); font-size: 0.85rem; padding: 10px;">
+              💾 Save / Clear
+            </button>
+            <button type="button" onclick="generateHMSeal()" class="btn btn-primary" style="font-size: 0.85rem; padding: 10px;">
+              🔏 Get HM Seal
+            </button>
+          </div>
+        </form>
+
+        <!-- HM Seal Preview Box (Hidden initially) -->
+        <div id="seal-display-section" class="seal-box hidden">
+          <p style="font-size: 0.72rem; font-weight: 600; color: #1a73e8; margin-bottom: 2px;">APPROVED & VERIFIED BY HEAD MASTER</p>
+          <div class="blue-seal-stamp">
+            <span>APPROVED</span>
+            <span style="font-size: 0.5rem; margin-top: 2px;">AP SCHOOLS</span>
+            <span style="font-size: 0.45rem;">VALIASS</span>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-color); font-weight: 600;" id="seal-hm-name">HM: --</p>
+          <p style="font-size: 0.68rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
+        </div>
+
+        <!-- Action Buttons 2: WhatsApp Share & Create Poster -->
+        <div id="post-seal-actions" class="hidden" style="margin-top: 14px;">
+          <label style="font-weight: 600; font-size: 0.8rem; color: var(--primary-darker); margin-bottom: 4px; display: block;">WhatsApp Formatted Message Preview:</label>
+          <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.9rem; padding: 12px; box-shadow: 0 4px 12px rgba(37,211,102,0.3);">
+              💬 Share to WhatsApp Group
+            </button>
+            <button type="button" onclick="createDiaryPoster()" class="btn btn-primary" style="font-size: 0.9rem; padding: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%);">
+              🎨 Create & Download Diary Poster (PNG)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="app-footer"></footer>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    let isSealGenerated = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('ap_app_password')) {
+        window.location.href = './login.html';
+        return;
+      }
+      // Set today's date automatically
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('diary-date').value = today;
+
+      // Restore saved teacher name if any
+      const savedTeacher = localStorage.getItem('ap_last_teacher') || '';
+      if (savedTeacher) {
+        document.getElementById('teacher-name').value = savedTeacher;
+      }
+    });
+
+    function loadClassSubjects() {
+      const classNum = document.getElementById('class-select').value;
+      const container = document.getElementById('subjects-container');
+      container.innerHTML = '';
+
+      let defaultSubjects = [];
+      if (classNum === '1' || classNum === '2') {
+        defaultSubjects = ['Telugu', 'English', 'Maths'];
+      } else {
+        defaultSubjects = ['Telugu', 'English', 'Maths', 'EVS'];
+      }
+
+      defaultSubjects.forEach((sub, idx) => {
+        container.innerHTML += `
+          <div class="subject-row">
+            <input type="text" value="${sub}" readonly style="background: var(--surface-alt); font-weight: 600; font-size: 0.85rem;" />
+            <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson covered..." required />
+          </div>
+        `;
+      });
+    }
+
+    function addCustomSubjectRow() {
+      const container = document.getElementById('subjects-container');
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'subject-row';
+      rowDiv.innerHTML = `
+        <input type="text" class="subject-name-input" placeholder="Subject Name" required style="font-weight: 600; font-size: 0.85rem;" />
+        <div style="display: flex; gap: 4px;">
+          <input type="text" class="subject-topic-input" placeholder="Enter topic/lesson..." required style="flex:1;" />
+          <button type="button" onclick="this.parentElement.parentElement.remove()" class="header-btn" style="background: #ffebee; color: #c62828; border-color: rgba(198,40,40,0.3); padding: 0 8px;">❌</button>
+        </div>
+      `;
+      container.appendChild(rowDiv);
+    }
+
+    function saveDiaryForm() {
+      const teacher = document.getElementById('teacher-name').value;
+      if (teacher) localStorage.setItem('ap_last_teacher', teacher);
+      alert('E-Diary form data saved locally on this device!');
+    }
+
+    function generateHMSeal() {
+      const classNum = document.getElementById('class-select').value;
+      const teacher = document.getElementById('teacher-name').value;
+      if (!classNum) {
+        alert('Please select a class first.');
+        return;
+      }
+      if (!teacher) {
+        alert('Please enter the Teacher Name.');
+        return;
+      }
+
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const now = new Date();
+      const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('seal-hm-name').textContent = `Head Master: ${hmName}`;
+      document.getElementById('seal-timestamp').textContent = `Approved On: ${timeStr}`;
+
+      document.getElementById('seal-display-section').classList.remove('hidden');
+      document.getElementById('post-seal-actions').classList.remove('hidden');
+      isSealGenerated = true;
+
+      // Build WhatsApp preview text
+      buildWhatsAppText(hmName, timeStr);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function buildWhatsAppText(hmName, timeStr) {
+      const school = localStorage.getItem('ap_school_name') || 'AP School';
+      const date = document.getElementById('diary-date').value;
+      const teacher = document.getElementById('teacher-name').value;
+      const classNum = document.getElementById('class-select').value;
+      const notes = document.getElementById('diary-notes').value || 'None';
+
+      let subjectsText = '';
+      const rows = document.querySelectorAll('.subject-row');
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const subName = inputs[0].value || inputs[0].placeholder;
+        const topic = inputs[inputs.length - 1].value || '(No update)';
+        subjectsText += `• *${subName}*: ${topic}\n`;
+      });
+
+      const message = `🏫 *AP SCHOOLS E-DIARY* 🍎\n` +
+        `📍 *School*: ${school}\n` +
+        `📅 *Date*: ${date} | *Class*: Class ${classNum}\n` +
+        `👨‍🏫 *Teacher*: ${teacher}\n\n` +
+        `📚 *Topics Covered*:\n${subjectsText}\n` +
+        `📝 *Notes*: ${notes}\n\n` +
+        `🔏 *HM Approved*: ${hmName} (${timeStr})\n` +
+        `✨ _An initiative of VALIASS team_`;
+
+      document.getElementById('whatsapp-text-preview').textContent = message;
+      window.whatsappShareMessage = message;
+    }
+
+    function shareToWhatsApp() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      const encoded = encodeURIComponent(window.whatsappShareMessage || 'AP Schools E-Diary Report');
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    }
+
+    function createDiaryPoster() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first before creating the poster.');
+        return;
+      }
+
+      // Create a clean canvas to render the premium PNG poster
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1130; // 1:sqrt(2) aspect ratio poster
+      const ctx = canvas.getContext('2d');
+
+      // 1. Background gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, 800, 1130);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F2FAF5');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 800, 1130);
+
+      // 2. Top Header banner
+      ctx.fillStyle = '#0E7B3E';
+      ctx.fillRect(0, 0, 800, 130);
+
+      // Header Title
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 28px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('GOVERNMENT OF ANDHRA PRADESH', 400, 48);
+      ctx.font = '18px Inter, sans-serif';
+      ctx.fillText('AP Schools Digital E-Diary & Management System', 400, 82);
+
+      // Gold Accent line
+      ctx.fillStyle = '#F4C430';
+      ctx.fillRect(0, 130, 800, 6);
+
+      // 3. School Details Box
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#D2DCD6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(50, 160, 700, 120, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      const school = localStorage.getItem('ap_school_name') || 'AP Model School';
+      const district = localStorage.getItem('ap_district') || '';
+      const mandal = localStorage.getItem('ap_mandal') || '';
+      const village = localStorage.getItem('ap_village') || '';
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 24px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(school, 80, 205);
+
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '15px Inter, sans-serif';
+      ctx.fillText(`Location: ${village}, ${mandal} Mandal, ${district} Dist.`, 80, 238);
+
+      const date = document.getElementById('diary-date').value;
+      const classNum = document.getElementById('class-select').value;
+      const teacher = document.getElementById('teacher-name').value;
+      ctx.fillText(`Date: ${date}   |   Class: Class ${classNum}   |   Teacher: ${teacher}`, 80, 268);
+
+      // 4. Subjects Card
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(50, 305, 700, 360, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#0E7B3E';
+      ctx.font = 'bold 20px "Playfair Display", serif';
+      ctx.fillText('📚 Daily Class Subjects & Topics Covered', 80, 345);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '16px Inter, sans-serif';
+      let yPos = 385;
+      const rows = document.querySelectorAll('.subject-row');
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll('input');
+        const subName = inputs[0].value || inputs[0].placeholder;
+        const topic = inputs[inputs.length - 1].value || '(No update)';
+        
+        ctx.fillStyle = '#095C2D';
+        ctx.font = 'bold 16px Inter, sans-serif';
+        ctx.fillText(`• ${subName}:`, 80, yPos);
+        
+        ctx.fillStyle = '#14201A';
+        ctx.font = '16px Inter, sans-serif';
+        ctx.fillText(topic, 230, yPos);
+        
+        yPos += 38;
+      });
+
+      // 5. Notes Card
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(50, 690, 700, 130, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#0E7B3E';
+      ctx.font = 'bold 18px "Playfair Display", serif';
+      ctx.fillText('📝 General Notes / Remarks', 80, 725);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '15px Inter, sans-serif';
+      const notes = document.getElementById('diary-notes').value || 'No special remarks recorded for today.';
+      // Simple text wrap for notes
+      ctx.fillText(notes.substring(0, 85), 80, 760);
+      if (notes.length > 85) {
+        ctx.fillText(notes.substring(85, 170), 80, 785);
+      }
+
+      // 6. HM Seal & Approval Stamp Section (Cinematic View)
+      ctx.fillStyle = '#F2FAF5';
+      ctx.strokeStyle = 'rgba(14,123,62,0.2)';
+      ctx.beginPath();
+      ctx.roundRect(50, 840, 700, 200, 12);
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw Blue Seal Stamp on right
+      ctx.save();
+      ctx.translate(620, 940);
+      ctx.rotate(-0.1);
+      ctx.strokeStyle = '#1a73e8';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 55, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1a73e8';
+      ctx.font = 'bold 11px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('APPROVED', 0, -12);
+      ctx.font = 'bold 9px Inter, sans-serif';
+      ctx.fillText('AP SCHOOLS', 0, 8);
+      ctx.font = 'bold 8px Inter, sans-serif';
+      ctx.fillText('VALIASS', 0, 24);
+      ctx.restore();
+
+      // HM Text on left
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 18px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Head Master Seal & Verification', 80, 880);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '16px Inter, sans-serif';
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const timeStr = document.getElementById('seal-timestamp').textContent.replace('Approved On: ', '');
+      ctx.fillText(`Head Master: ${hmName}`, 80, 920);
+      ctx.fillText(`Verification Time: ${timeStr}`, 80, 955);
+      ctx.fillText('Status: Digitally Verified & Approved', 80, 990);
+
+      // 7. Footer brand
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('An initiative of @VALIASS team · AP Schools Portal', 400, 1080);
+
+      // Trigger download
+      const link = document.createElement('a');
+      link.download = `AP-Schools-EDiary-${date}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
