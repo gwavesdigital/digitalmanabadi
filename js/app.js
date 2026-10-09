@@ -73,7 +73,6 @@ function appGoBack() {
 
 function appLogout() {
   if (confirm('Are you sure you want to log out of your session?')) {
-    // Preserve registration password so setup isn't triggered again; redirect to PIN login
     const isSubfolder = window.location.pathname.includes('/pages/');
     window.location.href = isSubfolder ? './login.html' : './pages/login.html';
   }
