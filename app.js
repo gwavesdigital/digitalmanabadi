@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const footers = document.querySelectorAll('.app-footer');
   footers.forEach(footer => {
     footer.innerHTML = `
-      <p style="font-weight: 600; color: var(--primary-green); margin-bottom: 3px;">An initiative of @VALIASS team</p>
+      <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 3px;">An initiative of @VALIASS team</p>
       <div class="support-links" style="display: flex; justify-content: center; align-items: center; gap: 8px;">
         <a href="tel:8985361991" class="support-link support-call" title="Call VALIASS Support">📞</a>
         <a href="https://wa.me/918985361991?text=Hello%20VALIASS%20team,%20I%20need%20assistance%20with%20AP%20Schools%20App." target="_blank" class="support-link support-whatsapp" title="WhatsApp VALIASS Support">
@@ -113,6 +113,4 @@ function generateResetKey() {
   const dateStr = dd + mm + yy;
   return 919720 - parseInt(dateStr, 10);
 }
-```[cite: 10]
-
-ఇప్పుడు ఇండెక్స్ పేజీ, స్టైల్ షీట్ (`style.css`), మరియు హెడర్/ఫూటర్ కంట్రోల్ చేసే `app.js` అన్నీ సిద్ధంగా ఉన్నాయి[cite: 8, 9, 10]. దీని తర్వాత లాగిన్ (`login.html`) లేదా సెటప్ (`setup.html`) పేజీల కోడింగ్ కావాలా?
+```[cite: 9]
