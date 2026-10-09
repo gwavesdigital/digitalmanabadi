@@ -13,20 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const savedPass = localStorage.getItem('ap_app_password');
       const isLoggedOut = !savedPass || savedPass.trim() === '';
       const isInstalled = localStorage.getItem('ap_is_installed');
-      const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
+      const pathName = window.location.pathname;
+      const isHomePage = pathName.endsWith('index.html') || pathName === '/' || pathName === '';
+      const isLoginPage = pathName.endsWith('login.html');
 
       let actionsHTML = '';
 
-      if (!isHomePage) {
+      if (!isHomePage && !isLoginPage) {
         actionsHTML += `<button onclick="appGoBack()" class="header-btn" title="Go Back">⬅️ Back</button>`;
+        actionsHTML += `<a href="${homePath}" class="header-btn" title="Home">🏠 Home</a>`;
+      } else if (isLoginPage) {
         actionsHTML += `<a href="${homePath}" class="header-btn" title="Home">🏠 Home</a>`;
       }
 
-      if (!isLoggedOut && !isHomePage) {
+      if (!isLoggedOut && !isHomePage && !isLoginPage) {
         actionsHTML += `<button onclick="appLogout()" class="header-btn" title="Logout">🚪 Logout</button>`;
       }
 
-      if (!isInstalled) {
+      if (!isInstalled && isHomePage) {
         actionsHTML += `<button onclick="triggerInstall()" class="header-btn" title="Install App">⬇️ App</button>`;
       }
 
@@ -103,7 +107,7 @@ function verifySchoolActivation(secretCode) {
   return cleanCode === expectedKey || cleanCode === dynamicKey || cleanCode.endsWith("@533340");
 }
 
-generateResetKey = function() {
+function generateResetKey() {
   const now = new Date();
   const dd = String(now.getDate()).padStart(2, '0');
   const mm = String(now.getMonth() + 1).padStart(2, '0');
