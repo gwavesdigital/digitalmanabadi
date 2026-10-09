@@ -110,18 +110,18 @@ body {
   }
 }
 
-/* Header */
+/* Signature Green Header Ribbon */
 .app-header {
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-darker) 100%);
+  border-bottom: 3px solid var(--accent-gold);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(14, 123, 62, 0.2);
 }
 
 .header-brand {
@@ -136,19 +136,20 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--accent-gold);
-  box-shadow: 0 2px 8px rgba(244,196,48,0.3);
+  box-shadow: 0 2px 8px rgba(244,196,48,0.4);
+  background: white;
 }
 
 .header-brand h1 {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
-  color: var(--primary-darker);
+  color: #FFFFFF;
   line-height: 1.1;
 }
 
 .header-brand p {
   font-size: 0.65rem;
-  color: var(--text-muted);
+  color: #E6F4EC;
   font-weight: 500;
 }
 
@@ -159,9 +160,9 @@ body {
 }
 
 .header-btn {
-  background: var(--surface-alt);
-  border: 1px solid var(--border-color);
-  color: var(--primary-dark);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
   font-size: 0.75rem;
   font-weight: 600;
   padding: 6px 10px;
@@ -175,8 +176,8 @@ body {
 }
 
 .header-btn:hover {
-  background: var(--primary-light);
-  border-color: var(--primary-green);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--accent-gold);
 }
 
 /* Main Views */
