@@ -16,9 +16,9 @@
       background: linear-gradient(135deg, rgba(14,123,62,0.12) 0%, rgba(244,196,48,0.1) 100%);
       border: 1.5px solid rgba(14, 123, 62, 0.2);
       border-radius: 20px;
-      padding: 22px 16px;
+      padding: 18px 16px;
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       box-shadow: 0 8px 30px rgba(14, 123, 62, 0.06);
       position: relative;
       overflow: hidden;
@@ -37,25 +37,94 @@
       background: rgba(255, 255, 255, 0.95);
       border: 1.5px solid rgba(14, 123, 62, 0.25);
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       overflow: hidden;
       white-space: nowrap;
       position: relative;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      transform: translateZ(0);
     }
 
     .ribbon-text {
       display: inline-block;
+      will-change: transform;
       animation: marquee 22s linear infinite;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--primary-dark);
     }
 
     @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+      0% { transform: translate3d(100%, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary-darker);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .portal-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 250, 245, 0.92) 100%);
+      border: 1.5px solid rgba(14, 123, 62, 0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text-color);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .portal-card:hover {
+      border-color: var(--primary-green);
+      box-shadow: 0 6px 20px rgba(14, 123, 62, 0.12);
+    }
+
+    .portal-card:active {
+      transform: scale(0.98);
+    }
+
+    .portal-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--primary-light);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      border: 1px solid rgba(14, 123, 62, 0.25);
+    }
+
+    .portal-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      color: var(--primary-darker);
+      margin-bottom: 2px;
+    }
+
+    .portal-info p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
     }
   </style>
 </head>
@@ -69,19 +138,22 @@
   <div class="app">
     <header class="app-header"></header>
 
-    <main class="app-view" style="justify-content: center;">
-      <!-- Cinematic Dashboard Hero Card -->
+    <main class="app-view">
+      <!-- Cinematic Dashboard Hero Card with School Details & HM Name -->
       <div class="cinematic-dashboard-hero">
-        <div class="hero-emblem" style="width: 72px; height: 72px; margin: 0 auto 12px auto; box-shadow: 0 4px 15px rgba(244, 196, 48, 0.35);">
+        <div class="hero-emblem" style="width: 60px; height: 60px; margin: 0 auto 8px auto; box-shadow: 0 4px 12px rgba(244, 196, 48, 0.35);">
           <img src="../assets/icon-192.png" alt="Logo" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
         </div>
 
-        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.3rem; margin-bottom: 6px;">
-          Welcome Dear <span id="disp-school" style="color: var(--primary-green);">School</span> Team! 🌟
+        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.2rem; margin-bottom: 4px;">
+          <span id="disp-school">AP Model School</span> 🌟
         </h2>
-        <p style="font-size: 0.76rem; color: var(--text-muted);">
-          📍 <span id="disp-location">Andhra Pradesh</span> · HM: <span id="disp-hm" style="font-weight: 600;">--</span>
+        <p style="font-size: 0.74rem; color: var(--text-muted); margin-bottom: 4px;">
+          📍 <span id="disp-location">District (Mandal, Village)</span>
         </p>
+        <div style="font-size: 0.72rem; font-weight: 600; color: var(--primary-dark); background: rgba(14,123,62,0.08); padding: 3px 10px; border-radius: 20px; display: inline-block;">
+          👨‍🏫 Head Master: <span id="disp-hm">--</span>
+        </div>
       </div>
 
       <!-- Moving Notification Ribbon (Marquee) -->
@@ -91,10 +163,48 @@
         </div>
       </div>
 
-      <!-- Start the Day Primary Action Button -->
-      <button onclick="startTheDay()" class="btn btn-primary btn-xl" style="font-size: 1.05rem; padding: 16px; border-radius: 14px; box-shadow: 0 8px 25px rgba(14, 123, 62, 0.35);">
-        ☀️ Start the Day →
-      </button>
+      <!-- Select Your Job Section -->
+      <h3 class="section-heading">
+        <span>🎯</span> Select Your Job / Portal
+      </h3>
+
+      <div class="portal-grid">
+        <!-- Option 1: E-Diary -->
+        <a href="./ediary.html" class="portal-card">
+          <div class="portal-icon">📖</div>
+          <div class="portal-info">
+            <h3>1. Classroom E-Diary</h3>
+            <p>Log daily subjects, class-wise lesson updates, notes & HM seal generation.</p>
+          </div>
+        </a>
+
+        <!-- Option 2: School Announcements -->
+        <a href="./announcement.html" class="portal-card">
+          <div class="portal-icon">📢</div>
+          <div class="portal-info">
+            <h3>2. School Announcements</h3>
+            <p>Publish school-wide or class-specific circulars with instant WhatsApp sharing.</p>
+          </div>
+        </a>
+
+        <!-- Option 3: MDM & Cook Portal -->
+        <a href="./mdm-cook.html" class="portal-card">
+          <div class="portal-icon">🍲</div>
+          <div class="portal-info">
+            <h3>3. MDM & Cook Portal</h3>
+            <p>Jagananna Goru Muddula menu tracking, cook & helper logs, and sponsorships.</p>
+          </div>
+        </a>
+
+        <!-- Option 4: Review Reports -->
+        <a href="./reports.html" class="portal-card">
+          <div class="portal-icon">📊</div>
+          <div class="portal-info">
+            <h3>4. Review Reports</h3>
+            <p>Review submitted summaries, daily logs, and app closure closing screen.</p>
+          </div>
+        </a>
+      </div>
     </main>
 
     <footer class="app-footer"></footer>
@@ -109,18 +219,15 @@
       }
 
       const schoolName = localStorage.getItem('ap_school_name') || 'AP Model School';
-      const district = localStorage.getItem('ap_district') || '';
-      const mandal = localStorage.getItem('ap_mandal') || '';
+      const district = localStorage.getItem('ap_district') || 'District';
+      const mandal = localStorage.getItem('ap_mandal') || 'Mandal';
+      const village = localStorage.getItem('ap_village') || 'Village';
       const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
 
       document.getElementById('disp-school').textContent = schoolName;
-      document.getElementById('disp-location').textContent = `${district} (${mandal})`;
+      document.getElementById('disp-location').textContent = `${district} · Mandal: ${mandal} · Village: ${village}`;
       document.getElementById('disp-hm').textContent = hmName;
     });
-
-    function startTheDay() {
-      alert('☀️ Starting your day! Ready for E-Diary entries and daily school management.');
-    }
   </script>
 </body>
 </html>
