@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E7B3E" />
+  <title>AP Schools · MDM & Cook Portal</title>
+
+  <link rel="icon" href="../assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/icon-192.png">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css" />
+  
+  <style>
+    .premium-hero-card {
+      background: linear-gradient(135deg, rgba(14,123,62,0.1) 0%, rgba(244,196,48,0.08) 100%);
+      border: 1.5px solid rgba(14, 123, 62, 0.2);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(14, 123, 62, 0.05);
+    }
+    .menu-item-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .menu-item-card label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--primary-darker);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .menu-item-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-green);
+      cursor: pointer;
+    }
+    .seal-box {
+      border: 2px dashed #1a73e8;
+      background: linear-gradient(135deg, rgba(26, 115, 232, 0.04) 0%, rgba(26, 115, 232, 0.01) 100%);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      margin: 16px 0;
+    }
+    .blue-seal-stamp {
+      width: 110px;
+      height: 110px;
+      border: 3.5px solid #1a73e8;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto;
+      color: #1a73e8;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.58rem;
+      text-align: center;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(26,115,232,0.25);
+      transform: rotate(-6deg);
+      background: rgba(255,255,255,0.95);
+      padding: 8px;
+    }
+    .whatsapp-preview-box {
+      background: #E8F8EC;
+      border: 1.5px solid rgba(32, 186, 90, 0.35);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.78rem;
+      color: #0c5123;
+      white-space: pre-wrap;
+      font-family: monospace;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bg-glow bg-glow-green"></div>
+    <div class="bg-glow bg-glow-gold"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <header class="app-header"></header>
+
+    <main class="app-view">
+      <div class="premium-hero-card">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; background: var(--primary-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid rgba(14,123,62,0.2);">
+            🍲
+          </div>
+          <div>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-darker); font-size: 1.2rem; margin-bottom: 2px;">
+              MDM & Cook Portal
+            </h2>
+            <p style="font-size: 0.74rem; color: var(--text-muted);">
+              Jagananna Goru Muddula menu tracking & preparation log.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-radius: 18px; padding: 20px;">
+        <form id="mdm-form" class="form-vertical" onsubmit="event.preventDefault();">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="mdm-date">Date</label>
+              <input type="date" id="mdm-date" onchange="loadDayMenu()" required style="border-radius: 10px;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="mdm-day">Day of Week</label>
+              <input type="text" id="mdm-day" readonly style="background: var(--surface-alt); font-weight: 700; border-radius: 10px;" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="cook-name">Cook Name</label>
+              <input type="text" id="cook-name" placeholder="Enter cook name" required style="border-radius: 10px;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="helper-details">Helper Details</label>
+              <input type="text" id="helper-details" placeholder="Helper names" required style="border-radius: 10px;" />
+            </div>
+          </div>
+
+          <div style="margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker);">Today's Scheduled Menu Items</label>
+              <button type="button" onclick="addSponsorItem()" class="header-btn" style="background: var(--primary-light); color: var(--primary-dark); border-color: rgba(14,123,62,0.3); font-size: 0.7rem; padding: 5px 10px; border-radius: 8px;">
+                ➕ Add Special/Sponsor Item
+              </button>
+            </div>
+            <div id="menu-items-container"></div>
+          </div>
+
+          <div class="form-group" style="margin-top: 12px;">
+            <label for="mdm-notes">MDM Notes / Remarks (Optional)</label>
+            <textarea id="mdm-notes" rows="2" placeholder="Enter remarks or stock updates (leave blank if none)..." style="border-radius: 10px;"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+            <button type="button" onclick="saveMDMForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              💾 Save Data
+            </button>
+            <button type="button" onclick="clearMDMForm()" class="btn" style="background: #ffebee; color: #c62828; border: 1.5px solid rgba(198,40,40,0.3); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              🗑️ Clear All
+            </button>
+          </div>
+
+          <button type="button" onclick="generateHMSeal()" class="btn btn-primary btn-block" style="margin-top: 8px; font-size: 0.95rem; padding: 14px; border-radius: 12px;">
+            🔏 Get HM Seal & Generate Options
+          </button>
+        </form>
+
+        <div id="seal-display-section" class="seal-box hidden">
+          <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px;">OFFICIAL HEAD MASTER VERIFICATION</p>
+          <div class="blue-seal-stamp" id="seal-stamp-preview"></div>
+          <p style="font-size: 0.7rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
+        </div>
+
+        <div id="post-seal-actions" class="hidden" style="margin-top: 16px;">
+          <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker); margin-bottom: 6px; display: block;">WhatsApp Formatted Message Preview:</label>
+          <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" onclick="copyFormattedMessage()" class="btn" style="background: #e2f0d9; color: #274e13; border: 1px solid #b6d7a8; font-size: 0.95rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              📋 Copy Formatted Message
+            </button>
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); font-weight: 700;">
+              💬 Share to WhatsApp Group
+            </button>
+            <button type="button" onclick="createMDMPoster()" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%); font-weight: 700;">
+              🎨 Create & Download Premium Poster (PNG)
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="app-footer"></footer>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    let isSealGenerated = false;
+    let sponsorCount = 0;
+
+    const weeklyMenus = {
+      0: ['Rice', 'Green Leafy Dal', 'Boiled/Fried Egg', 'Chikki (Peanut Bar)'],
+      1: ['Rice', 'Green Leafy Dal', 'Boiled/Fried Egg', 'Chikki (Peanut Bar)'],
+      2: ['Pulihora (Tamarind Rice)', 'Tomato Dal', 'Boiled Egg', 'Ragi Malt (Javu)'],
+      3: ['Rice', 'Mixed Vegetable Curry', 'Fried Egg', 'Chikki (Peanut Bar)'],
+      4: ['Vegetable Rice / Pulao', 'Potato Curry', 'Boiled Egg', 'Ragi Malt (Javu)'],
+      5: ['Rice', 'Green Leafy Dal', 'Fried Egg', 'Chikki (Peanut Bar)'],
+      6: ['Rice', 'Mixed Vegetable Curry', 'Pappu Charu (Rasam/Dal Soup)', 'Ragi Malt (Javu)']
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!localStorage.getItem('ap_app_password')) {
+        window.location.href = './login.html';
+        return;
+      }
+      document.getElementById('mdm-date').value = new Date().toISOString().split('T')[0];
+      loadDayMenu();
+      const savedCook = localStorage.getItem('ap_last_cook') || '';
+      if (savedCook) document.getElementById('cook-name').value = savedCook;
+    });
+
+    function loadDayMenu() {
+      const dateVal = document.getElementById('mdm-date').value;
+      const dateObj = new Date(dateVal);
+      const dayIndex = dateObj.getDay();
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      document.getElementById('mdm-day').value = dayNames[dayIndex];
+
+      const container = document.getElementById('menu-items-container');
+      container.innerHTML = '';
+
+      const items = weeklyMenus[dayIndex] || weeklyMenus[1];
+      items.forEach((item) => {
+        container.innerHTML += `
+          <div class="menu-item-card mdm-item-row">
+            <label>
+              <input type="checkbox" class="menu-checkbox" checked />
+              <span>${item}</span>
+            </label>
+            <span style="font-size: 0.72rem; color: var(--primary-green); font-weight: 700;">Served ✅</span>
+          </div>
+        `;
+      });
+      sponsorCount = 0;
+    }
+
+    function addSponsorItem() {
+      if (sponsorCount >= 2) {
+        alert('Maximum 2 special or sponsored items can be added.');
+        return;
+      }
+      sponsorCount++;
+      const container = document.getElementById('menu-items-container');
+      const div = document.createElement('div');
+      div.className = 'menu-item-card mdm-item-row sponsor-row';
+      div.innerHTML = `
+        <label style="flex:1; display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" class="menu-checkbox" checked />
+          <input type="text" class="sponsor-input-name" placeholder="Special / Sponsor Item Name" value="Sponsor Item #${sponsorCount}" style="padding: 6px 10px; font-size: 0.82rem; font-weight: 700; flex:1; border-radius: 8px;" />
+        </label>
+        <button type="button" onclick="this.parentElement.remove(); sponsorCount--;" class="header-btn" style="background: #ffebee; color: #c62828; border-color: rgba(198,40,40,0.3); padding: 4px 8px; margin-left: 6px; border-radius: 8px;">❌</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function saveMDMForm() {
+      const cook = document.getElementById('cook-name').value;
+      if (cook) localStorage.setItem('ap_last_cook', cook);
+      alert('MDM log saved successfully!');
+    }
+
+    function clearMDMForm() {
+      if (confirm('Are you sure you want to clear the MDM form fields?')) {
+        document.getElementById('mdm-form').reset();
+        document.getElementById('mdm-date').value = new Date().toISOString().split('T')[0];
+        loadDayMenu();
+        document.getElementById('seal-display-section').classList.add('hidden');
+        document.getElementById('post-seal-actions').classList.add('hidden');
+        isSealGenerated = false;
+      }
+    }
+
+    function generateHMSeal() {
+      const cook = document.getElementById('cook-name').value;
+      const helpers = document.getElementById('helper-details').value;
+
+      if (!cook || !helpers) {
+        alert('Please fill in Cook Name and Helper Details.');
+        return;
+      }
+
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const schoolName = localStorage.getItem('ap_school_name') || 'AP School';
+      const now = new Date();
+      const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('seal-stamp-preview').innerHTML = `
+        <span style="font-size: 0.52rem; font-weight: 700; line-height: 1.1;">${schoolName}</span>
+        <span style="font-size: 0.55rem; font-weight: 800; margin: 3px 0; color: #0c5123;">★ HM: ${hmName} ★</span>
+        <span style="font-size: 0.45rem;">OFFICIAL SEAL</span>
+      `;
+      document.getElementById('seal-timestamp').textContent = `Approved On: ${timeStr}`;
+
+      document.getElementById('seal-display-section').classList.remove('hidden');
+      document.getElementById('post-seal-actions').classList.remove('hidden');
+      isSealGenerated = true;
+
+      buildWhatsAppText(hmName, timeStr);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function buildWhatsAppText(hmName, timeStr) {
+      const school = localStorage.getItem('ap_school_name') || 'AP School';
+      const date = document.getElementById('mdm-date').value;
+      const day = document.getElementById('mdm-day').value;
+      const cook = document.getElementById('cook-name').value;
+      const helpers = document.getElementById('helper-details').value;
+      const notes = document.getElementById('mdm-notes').value.trim();
+
+      let menuText = '';
+      const rows = document.querySelectorAll('.mdm-item-row');
+      rows.forEach(row => {
+        const checkbox = row.querySelector('.menu-checkbox');
+        if (checkbox.checked) {
+          const nameInput = row.querySelector('.sponsor-input-name');
+          const itemName = nameInput ? nameInput.value : row.querySelector('span').textContent;
+          menuText += `• ${itemName} (Served ✅)\n`;
+        }
+      });
+
+      let notesSection = '';
+      if (notes !== '') {
+        notesSection = `📝 *Notes*: ${notes}\n\n`;
+      }
+
+      const message = `🍲 *AP SCHOOLS MDM PORTAL* 🍎\n` +
+        `📍 *School*: ${school}\n` +
+        `📅 *Date*: ${date} (${day})\n` +
+        `👩‍🍳 *Cook*: ${cook} | *Helpers*: ${helpers}\n\n` +
+        `🍽️ *Menu & Distribution List*:\n${menuText}\n` +
+        `${notesSection}` +
+        `🔏 *HM Approved*: ${hmName} (${timeStr})\n` +
+        `✨ An initiative of @VALIASS team for AP Schools`;
+
+      document.getElementById('whatsapp-text-preview').textContent = message;
+      window.whatsappShareMessage = message;
+    }
+
+    function copyFormattedMessage() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      navigator.clipboard.writeText(window.whatsappShareMessage || '').then(() => {
+        alert('Formatted message copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy message.');
+      });
+    }
+
+    function shareToWhatsApp() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first.');
+        return;
+      }
+      const encoded = encodeURIComponent(window.whatsappShareMessage || 'AP Schools MDM Report');
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    }
+
+    function createMDMPoster() {
+      if (!isSealGenerated) {
+        alert('Please get the Head Master Seal first before creating the poster.');
+        return;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1130;
+      const ctx = canvas.getContext('2d');
+
+      const bgGrad = ctx.createLinearGradient(0, 0, 800, 1130);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F2FAF5');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 800, 1130);
+
+      // Rich Emerald Header Banner
+      ctx.fillStyle = '#0E7B3E';
+      ctx.fillRect(0, 0, 800, 140);
+
+      // Centered Header Typography (No emblem)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 15px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('GOVERNMENT OF ANDHRA PRADESH', 400, 42);
+
+      ctx.font = 'bold 26px "Playfair Display", serif';
+      ctx.fillText('AP Schools Digital Mana Badi', 400, 76);
+
+      // Pill Badge for Module
+      ctx.save();
+      ctx.fillStyle = '#F4C430';
+      ctx.beginPath();
+      ctx.roundRect(260, 92, 280, 26, 13);
+      ctx.fill();
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillText('🍲 MDM & Cook Portal', 400, 110);
+      ctx.restore();
+
+      // Gold Accent Ribbon
+      ctx.fillStyle = '#F4C430';
+      ctx.fillRect(0, 140, 800, 6);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#D2DCD6';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(50, 170, 700, 115, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      const school = localStorage.getItem('ap_school_name') || 'AP Model School';
+      const district = localStorage.getItem('ap_district') || '';
+      const mandal = localStorage.getItem('ap_mandal') || '';
+      const village = localStorage.getItem('ap_village') || '';
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 22px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(school, 80, 212);
+
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillText(`Location: ${village}, ${mandal} Mandal, ${district} Dist.`, 80, 242);
+
+      const date = document.getElementById('mdm-date').value;
+      const day = document.getElementById('mdm-day').value;
+      const cook = document.getElementById('cook-name').value;
+      const helpers = document.getElementById('helper-details').value;
+      ctx.fillText(`Date: ${date} (${day})   |   Cook: ${cook}   |   Helpers: ${helpers}`, 80, 268);
+
+      const notes = document.getElementById('mdm-notes').value.trim();
+      const hasNotes = notes !== '';
+      const contentCardHeight = hasNotes ? 370 : 450;
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(50, 305, 700, contentCardHeight, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#0E7B3E';
+      ctx.font = 'bold 20px "Playfair Display", serif';
+      ctx.fillText('🍲 Served Menu Items Checklist', 80, 345);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '16px Inter, sans-serif';
+      
+      let yPos = 390;
+      const rows = document.querySelectorAll('.mdm-item-row');
+      rows.forEach(row => {
+        const checkbox = row.querySelector('.menu-checkbox');
+        if (checkbox.checked) {
+          const nameInput = row.querySelector('.sponsor-input-name');
+          const itemName = nameInput ? nameInput.value : row.querySelector('span').textContent;
+          
+          ctx.fillStyle = '#095C2D';
+          ctx.font = 'bold 16px Inter, sans-serif';
+          ctx.fillText(`✅  ${itemName}`, 80, yPos);
+          yPos += 36;
+        }
+      });
+
+      let sealBoxY = 815;
+      if (hasNotes) {
+        ctx.fillStyle = '#F2FAF5';
+        ctx.beginPath();
+        ctx.roundRect(80, 695, 640, 75, 10);
+        ctx.fill();
+
+        ctx.fillStyle = '#0E7B3E';
+        ctx.font = 'bold 14px "Playfair Display", serif';
+        ctx.fillText('📝 Notes / Remarks:', 100, 720);
+
+        ctx.fillStyle = '#14201A';
+        ctx.font = '14px Inter, sans-serif';
+        ctx.fillText(notes.substring(0, 85), 100, 748);
+        sealBoxY = 805;
+      } else {
+        sealBoxY = 780;
+      }
+
+      ctx.fillStyle = '#F2FAF5';
+      ctx.strokeStyle = 'rgba(14,123,62,0.2)';
+      ctx.beginPath();
+      ctx.roundRect(50, sealBoxY, 700, 215, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(620, sealBoxY + 108);
+      ctx.rotate(-0.08);
+      
+      ctx.strokeStyle = '#1a73e8';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 62, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, 52, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1a73e8';
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(school.substring(0, 22), 0, -22);
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = '#063D1E';
+      ctx.fillText(`HM: ${localStorage.getItem('ap_hm_name') || 'Head Master'}`, 0, 2);
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.fillStyle = '#1a73e8';
+      ctx.fillText('OFFICIAL SEAL', 0, 24);
+      ctx.restore();
+
+      ctx.fillStyle = '#063D1E';
+      ctx.font = 'bold 18px "Playfair Display", serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Head Master Verification & Official Seal', 80, sealBoxY + 40);
+
+      ctx.fillStyle = '#14201A';
+      ctx.font = '15px Inter, sans-serif';
+      const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const timeStr = document.getElementById('seal-timestamp').textContent.replace('Approved On: ', '');
+      ctx.fillText(`Head Master Name: ${hmName}`, 80, sealBoxY + 85);
+      ctx.fillText(`Approval Timestamp: ${timeStr}`, 80, sealBoxY + 120);
+      ctx.fillText('Status: Digitally Verified & Approved by School Authority', 80, sealBoxY + 155);
+
+      ctx.fillStyle = '#6B7A72';
+      ctx.font = '13px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('An initiative of @VALIASS team for AP Schools', 400, 1075);
+
+      const link = document.createElement('a');
+      link.download = `AP-Schools-MDM-${date}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
