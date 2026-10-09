@@ -4,11 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0E7B3E" />
-  <title>Digital Mana Badi · AP Schools</title>
+  <title>AP Schools · E-Diary & Management System</title>
 
+  <!-- Favicon & PWA Icons -->
   <link rel="icon" href="./assets/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="./assets/icon-192.png">
   <link rel="manifest" href="./manifest.json">
+
+  <!-- Social Media Preview -->
+  <meta property="og:title" content="AP Schools E-Diary & Management System">
+  <meta property="og:description" content="Official digital assistant for Teachers, Cooks, and Head Masters across Andhra Pradesh. An initiative of VALIASS team.">
+  <meta property="og:image" content="./assets/og-image.png">
+  <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,6 +24,8 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+
+  <!-- Background FX -->
   <div class="background" aria-hidden="true">
     <div class="bg-glow bg-glow-green"></div>
     <div class="bg-glow bg-glow-gold"></div>
@@ -24,24 +33,31 @@
   </div>
 
   <div class="app">
+    
+    <!-- Header (Dynamically injected via app.js) -->
     <header class="app-header"></header>
 
+    <!-- Main Content -->
     <main class="app-view home-view">
-      <div class="hero-emblem" style="box-shadow: 0 0 25px rgba(244,196,48,0.4);">
+      
+      <!-- Premium Circular Center Emblem Logo -->
+      <div class="hero-emblem">
         <img src="./assets/icon-192.png" alt="AP Schools Logo" />
       </div>
 
       <span class="hero-subtitle">Government of Andhra Pradesh</span>
+      
       <h2 class="hero-title">DIGITAL MANA BADI</h2>
       
       <p class="hero-desc">
         A Pilot Digital Initiative MPMP School No.1, Dagguluru Under the Leadership of Headmaster Sri V. Srinivasa Raju.
       </p>
 
-      <button onclick="routerLaunch()" class="btn btn-primary btn-xl hero-btn-action" style="box-shadow: 0 8px 25px rgba(14,123,62,0.35);">
+      <button onclick="routerLaunch()" class="btn btn-primary btn-xl hero-btn-action">
         Get Started →
       </button>
 
+      <!-- Model School Showcase Photo Card -->
       <div class="school-showcase-card">
         <img src="./assets/model-school.jpg" alt="AP Model School" class="school-showcase-img" />
         <div class="school-showcase-overlay">
@@ -50,7 +66,9 @@
       </div>
     </main>
 
+    <!-- Footer (Injected via app.js with VALIASS signature) -->
     <footer class="app-footer"></footer>
+
   </div>
 
   <script src="./js/app.js"></script>
@@ -66,308 +84,521 @@
   </script>
 </body>
 </html>
-```[cite: 8]
+```[cite: 1]
 
 ---
 
-### 2. `pages/setup.html` (ఇనిషియల్ స్కూల్ సెటప్ పేజీ)
-[cite: 7, 9, 10]
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0E7B3E" />
-  <title>AP Schools · Initial Setup</title>
-  <link rel="stylesheet" href="../style.css" />
-</head>
-<body>
-  <div class="background" aria-hidden="true">
-    <div class="bg-glow bg-glow-green"></div>
-    <div class="bg-glow bg-glow-gold"></div>
-    <div class="bg-grid"></div>
-  </div>
+### 2. `style.css` (గ్లోబల్ డిజైన్ & థీమ్)
+```css
+:root {
+    --primary-green: #0E7B3E;
+    --primary-dark: #095C2D;
+    --primary-darker: #063D1E;
+    --primary-light: #E6F4EC;
+    --primary-soft: #F2FAF5;
+    
+    --accent-gold: #F4C430;
+    --accent-dark: #D4A017;
+    
+    --bg-color: #F3F6F4;
+    --surface: #FFFFFF;
+    --surface-alt: #FAFCFA;
+    
+    --text-color: #14201A;
+    --text-muted: #6B7A72;
+    --border-color: #D2DCD6;
+    
+    --shadow-sm: 0 2px 8px rgba(14, 123, 62, 0.05);
+    --shadow-lg: 0 10px 30px rgba(14, 123, 62, 0.1);
+}
 
-  <div class="app">
-    <header class="app-header"></header>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
 
-    <main class="app-view">
-      <div class="card" style="border: 1.5px solid rgba(14,123,62,0.2); box-shadow: 0 10px 30px rgba(14,123,62,0.08);">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--primary-darker); margin-bottom: 4px;">School Registration Setup</h2>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px;">Authorized device configuration by VALIASS team.</p>
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
 
-        <form id="setup-form" onsubmit="handleInitialSetup(event)" class="form-vertical">
-          <div class="form-group">
-            <label for="district">District</label>
-            <select id="district" required>
-              <option value="" disabled selected>-- Select District --</option>
-              <option value="Dr. B.R. Ambedkar Konaseema">Dr. B.R. Ambedkar Konaseema</option>
-              <option value="West Godavari">West Godavari</option>
-              <option value="East Godavari">East Godavari</option>
-              <option value="Eluru">Eluru</option>
-              <option value="Kakinada">Kakinada</option>
-              <option value="Krishna">Krishna</option>
-              <option value="Visakhapatnam">Visakhapatnam</option>
-              <option value="Guntur">Guntur</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="mandal">Mandal</label>
-            <input type="text" id="mandal" placeholder="Enter mandal name" required />
-          </div>
-
-          <div class="form-group">
-            <label for="village">Village / Town</label>
-            <input type="text" id="village" placeholder="Enter village name" required />
-          </div>
-
-          <div class="form-group">
-            <label for="school-name">School Name</label>
-            <input type="text" id="school-name" placeholder="Enter school name" required />
-          </div>
-
-          <div class="form-group">
-            <label for="hm-name">Head Master Name</label>
-            <input type="text" id="hm-name" placeholder="Enter head master name" required />
-          </div>
-
-          <div class="form-group">
-            <label for="new-password">Set 4-Digit App PIN</label>
-            <input type="password" id="new-password" placeholder="••••" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required />
-          </div>
-
-          <div class="form-group">
-            <label for="secret-code">VALIASS Secret Code</label>
-            <input type="password" id="secret-code" placeholder="Enter team secret code" required />
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; margin-top: 6px;">
-            Complete Setup →
-          </button>
-        </form>
-      </div>
-    </main>
-
-    <footer class="app-footer"></footer>
-  </div>
-
-  <script src="../js/app.js"></script>
-  <script>
-    function handleInitialSetup(e) {
-      e.preventDefault();
-      const district = document.getElementById('district').value;
-      const mandal = document.getElementById('mandal').value;
-      const village = document.getElementById('village').value;
-      const schoolName = document.getElementById('school-name').value;
-      const hmName = document.getElementById('hm-name').value;
-      const password = document.getElementById('new-password').value;
-      const secretCode = document.getElementById('secret-code').value.trim();
-
-      if (!verifySchoolActivation(secretCode)) {
-        alert('Invalid VALIASS Secret Code. Please check the code.');
-        return;
-      }
-
-      localStorage.setItem('ap_district', district);
-      localStorage.setItem('ap_mandal', mandal);
-      localStorage.setItem('ap_village', village);
-      localStorage.setItem('ap_school_name', schoolName);
-      localStorage.setItem('ap_hm_name', hmName);
-      localStorage.setItem('ap_app_password', password);
-      localStorage.setItem('ap_is_installed', 'true');
-
-      window.location.href = './login.html';
+@media (min-width: 481px) {
+    html, body {
+        padding: 20px 0;
     }
-  </script>
-</body>
-</html>
-```[cite: 7, 10]
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.15;
+}
+
+.bg-glow-green {
+    width: 300px;
+    height: 300px;
+    background: var(--primary-green);
+    top: -50px;
+    right: -50px;
+}
+
+.bg-glow-gold {
+    width: 250px;
+    height: 250px;
+    background: var(--accent-gold);
+    bottom: -50px;
+    left: -50px;
+}
+
+.bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(14, 123, 62, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.app {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 481px) {
+    .app {
+        max-width: 440px;
+        height: 90vh;
+        max-height: 880px;
+        border-radius: 24px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
+    }
+}
+
+.app-header {
+    background: var(--primary-green);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.header-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+    background: white;
+}
+
+.header-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.header-brand p {
+    font-size: 0.68rem;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.app-view {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-view {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Premium Circular Center Emblem */
+.hero-emblem {
+    width: 72px;
+    height: 72px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px auto;
+    border: 2.5px solid var(--accent-gold);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.hero-emblem img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.hero-subtitle {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--primary-darker);
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.hero-desc {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    max-width: 280px;
+    margin: 0 auto 16px auto;
+}
+
+.hero-btn-action {
+    width: 100%;
+    max-width: 240px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    margin: 0 auto;
+}
+
+/* Model School Showcase Photo Card */
+.school-showcase-card {
+    width: 100%;
+    max-width: 280px;
+    height: 110px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 14px auto 4px auto;
+    position: relative;
+    border: 1.5px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    background: var(--surface-alt);
+    flex-shrink: 0;
+}
+
+.school-showcase-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.school-showcase-overlay {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    background: rgba(6, 61, 30, 0.85);
+    backdrop-filter: blur(4px);
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.school-showcase-overlay span {
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 8px 16px;
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color);
+    background: var(--surface-alt);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+
+.support-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+}
+
+.support-link {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.support-call {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border: 1px solid rgba(14, 123, 62, 0.2);
+    font-size: 0.75rem;
+}
+
+.support-whatsapp {
+    background: #E8F8EC;
+    color: #20BA5A;
+    border: 1px solid rgba(32, 186, 90, 0.25);
+}
+
+.card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 14px;
+}
+
+.form-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--primary-darker);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    background: var(--surface);
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(14, 123, 62, 0.1);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0E7B3E 0%, #095C2D 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(14, 123, 62, 0.25);
+}
+
+.btn-xl, .btn-block {
+    width: 100%;
+}
+```[cite: 10]
 
 ---
 
-### 3. `pages/login.html` (సెక్యూర్ లాగిన్ / పిన్ ఎంట్రెన్స్ పేజీ)
-[cite: 4, 9, 10]
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0E7B3E" />
-  <title>AP Schools · Secure Login</title>
-  <link rel="stylesheet" href="../style.css" />
-  <style>
-    .cinematic-login-card {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 250, 245, 0.92) 100%);
-      backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(14, 123, 62, 0.2);
-      box-shadow: 0 16px 40px rgba(14, 123, 62, 0.12);
-      border-radius: 20px;
-      padding: 28px 22px;
-      position: relative;
-      overflow: hidden;
-    }
-    .cinematic-login-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--accent-gold));
-    }
-    .pin-input-field {
-      letter-spacing: 0.4em;
-      text-align: center;
-      font-size: 1.5rem !important;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.95) !important;
-    }
-  </style>
-</head>
-<body>
-  <div class="background" aria-hidden="true">
-    <div class="bg-glow bg-glow-green"></div>
-    <div class="bg-glow bg-glow-gold"></div>
-    <div class="bg-grid"></div>
-  </div>
+### 3. `js/app.js` (డైనమిక్ హెడర్ & వాలియాస్ ఫూటర్ ఇంజెక్షన్)
+```javascript
+// ==========================================
+// AP SCHOOLS E-DIARY - MAIN APPLICATION SCRIPT
+// ==========================================
 
-  <div class="app">
-    <header class="app-header"></header>
-
-    <main class="app-view" style="justify-content: center;">
-      <div class="cinematic-login-card">
-        <div class="hero-emblem" style="width: 68px; height: 68px; margin: 0 auto 14px auto; box-shadow: 0 4px 15px rgba(244, 196, 48, 0.35);">
-          <img src="../assets/icon-192.png" alt="Emblem" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
-        </div>
-
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary-darker); text-align: center; margin-bottom: 4px;">Secure Portal</h2>
-        <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Enter your authorized 4-digit PIN.</p>
-
-        <div id="attempt-dots-container" class="attempt-dots-wrapper hidden">
-          <span class="attempt-label">Failed Attempts:</span>
-          <div class="dots-group">
-            <div class="attempt-dot" id="dot-1"></div>
-            <div class="attempt-dot" id="dot-2"></div>
-            <div class="attempt-dot" id="dot-3"></div>
-            <div class="attempt-dot" id="dot-4"></div>
-            <div class="attempt-dot" id="dot-5"></div>
-          </div>
-        </div>
-
-        <form id="login-form" onsubmit="handleLogin(event)" class="form-vertical">
-          <div class="form-group">
-            <label for="app-password" style="text-align: center; letter-spacing: 0.5px;">4-DIGIT APP PIN</label>
-            <input type="password" id="app-password" class="pin-input-field" placeholder="••••" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required autocomplete="current-password" />
-          </div>
-
-          <button type="submit" id="login-btn" class="btn btn-primary btn-block" style="padding: 14px; font-size: 0.98rem; margin-top: 4px; box-shadow: 0 6px 20px rgba(14, 123, 62, 0.3);">
-            Login →
-          </button>
-        </form>
-
-        <div style="text-align: center; margin-top: 16px;">
-          <a href="./reset.html" style="font-size: 0.78rem; color: var(--primary-dark); font-weight: 600; text-decoration: none;">Forgot 4-Digit PIN?</a>
-        </div>
-
-        <div id="lockout-banner" class="hidden lockout-box" style="margin-top: 14px;">
-          ⚠️ Too many failed attempts. App paused for <span id="countdown-timer">60</span>s.
-        </div>
-      </div>
-    </main>
-
-    <footer class="app-footer"></footer>
-  </div>
-
-  <script src="../js/app.js"></script>
-  <script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const passInput = document.getElementById('app-password');
-      const loginBtn = document.getElementById('login-btn');
-      const dotsContainer = document.getElementById('attempt-dots-container');
-      const lockoutBanner = document.getElementById('lockout-banner');
-      const countdownSpan = document.getElementById('countdown-timer');
-
-      const lockoutExpiry = localStorage.getItem('ap_lockout_time');
-      if (lockoutExpiry && Date.now() < parseInt(lockoutExpiry, 10)) return;
-
-      let failedAttempts = parseInt(localStorage.getItem('ap_failed_attempts') || '0', 10);
+document.addEventListener('DOMContentLoaded', () => {
+  const headers = document.querySelectorAll('.app-header');
+  headers.forEach(header => {
+    if (!header.querySelector('.header-brand')) {
+      const isSubfolder = window.location.pathname.includes('/pages/');
+      const assetPath = isSubfolder ? '../assets/icon-192.png' : './assets/icon-192.png';
+      const homePath = isSubfolder ? '../index.html' : './index.html';
+      
       const savedPass = localStorage.getItem('ap_app_password');
+      const isLoggedOut = !savedPass || savedPass.trim() === '';
+      const isInstalled = localStorage.getItem('ap_is_installed');
+      const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname === '';
 
-      if (!savedPass) {
-        alert('App not initialized. Please complete setup first.');
-        window.location.href = './setup.html';
-        return;
+      let actionsHTML = '';
+
+      if (!isHomePage) {
+        actionsHTML += `<button onclick="appGoBack()" class="header-btn" title="Go Back">⬅️ Back</button>`;
       }
 
-      if (passInput.value === savedPass) {
-        localStorage.removeItem('ap_failed_attempts');
-        localStorage.removeItem('ap_lockout_time');
-        window.location.href = './dashboard.html';
-      } else {
-        failedAttempts++;
-        localStorage.setItem('ap_failed_attempts', failedAttempts);
-        passInput.value = '';
+      actionsHTML += `<a href="${homePath}" class="header-btn" title="Home">🏠 Home</a>`;
 
-        dotsContainer.classList.remove('hidden');
-        for (let i = 1; i <= 5; i++) {
-          const dot = document.getElementById(`dot-${i}`);
-          if (i <= failedAttempts) dot.classList.add('active');
-          else dot.classList.remove('active');
-        }
-
-        if (failedAttempts >= 5) {
-          const lockUntil = Date.now() + 60000;
-          localStorage.setItem('ap_lockout_time', lockUntil);
-          triggerLockoutUI(lockUntil, passInput, loginBtn, lockoutBanner, countdownSpan);
-        } else {
-          alert(`Incorrect PIN. ${5 - failedAttempts} attempts remaining.`);
-        }
+      if (!isLoggedOut && !isHomePage) {
+        actionsHTML += `<button onclick="appLogout()" class="header-btn" title="Logout">🚪 Logout</button>`;
       }
+
+      if (!isInstalled) {
+        actionsHTML += `<button onclick="triggerInstall()" class="header-btn" title="Install App">⬇️ App</button>`;
+      }
+
+      header.innerHTML = `
+        <div class="header-brand">
+          <img src="${assetPath}" alt="AP Schools Logo" class="header-logo" />
+          <div>
+            <h1>AP Schools</h1>
+            <p>Government of AP</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          ${actionsHTML}
+        </div>
+      `;
     }
+  });
 
-    function triggerLockoutUI(lockUntil, inputElem, btnElem, bannerElem, timerElem) {
-      inputElem.disabled = true;
-      btnElem.disabled = true;
-      btnElem.style.opacity = '0.5';
-      bannerElem.classList.remove('hidden');
+  const footers = document.querySelectorAll('.app-footer');
+  footers.forEach(footer => {
+    footer.innerHTML = `
+      <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 3px;">An initiative of @VALIASS team</p>
+      <div class="support-links" style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+        <a href="tel:8985361991" class="support-link support-call" title="Call VALIASS Support">📞</a>
+        <a href="https://wa.me/918985361991?text=Hello%20VALIASS%20team,%20I%20need%20assistance%20with%20AP%20Schools%20App." target="_blank" class="support-link support-whatsapp" title="WhatsApp VALIASS Support">
+          <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+        </a>
+      </div>
+    `;
+  });
+});
 
-      const interval = setInterval(() => {
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        if (remaining <= 0) {
-          clearInterval(interval);
-          localStorage.removeItem('ap_failed_attempts');
-          localStorage.removeItem('ap_lockout_time');
-          inputElem.disabled = false;
-          btnElem.disabled = false;
-          btnElem.style.opacity = '1';
-          bannerElem.classList.add('hidden');
-          document.getElementById('attempt-dots-container').classList.add('hidden');
-          for (let i = 1; i <= 5; i++) document.getElementById(`dot-${i}`).classList.remove('active');
-        } else {
-          timerElem.textContent = remaining;
-        }
-      }, 1000);
-    }
+function appGoBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    const isSubfolder = window.location.pathname.includes('/pages/');
+    window.location.href = isSubfolder ? '../index.html' : './index.html';
+  }
+}
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const lockoutExpiry = localStorage.getItem('ap_lockout_time');
-      if (lockoutExpiry && Date.now() < parseInt(lockoutExpiry, 10)) {
-        const passInput = document.getElementById('app-password');
-        const loginBtn = document.getElementById('login-btn');
-        const lockoutBanner = document.getElementById('lockout-banner');
-        const countdownSpan = document.getElementById('countdown-timer');
-        const failedAttempts = parseInt(localStorage.getItem('ap_failed_attempts') || '5', 10);
+function appLogout() {
+  if (confirm('Are you sure you want to log out of your session?')) {
+    localStorage.removeItem('ap_app_password');
+    const isSubfolder = window.location.pathname.includes('/pages/');
+    window.location.href = isSubfolder ? './login.html' : './pages/login.html';
+  }
+}
 
-        document.getElementById('attempt-dots-container').classList.remove('hidden');
-        for (let i = 1; i <= failedAttempts; i++) document.getElementById(`dot-${i}`).classList.add('active');
-        triggerLockoutUI(parseInt(lockoutExpiry, 10), passInput, loginBtn, lockoutBanner, countdownSpan);
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredPrompt = e;
+});
+
+function triggerInstall() {
+  if (window.deferredPrompt) {
+    window.deferredPrompt.prompt();
+    window.deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        localStorage.setItem('ap_is_installed', 'true');
       }
+      window.deferredPrompt = null;
     });
-  </script>
-</body>
-</html>
-```[cite: 4, 10]
+  } else {
+    alert('To install this app, tap your browser menu (3 dots) and select "Add to Home Screen" or "Install App".');
+  }
+}
 
-ఈ మూడు పేజీలు (Index, Setup, Login) మీ `digitalmanabadi` రిపోజిటరీలో హోమ్ నుండి లాగిన్ ఎంట్రెన్స్ వరకు పర్ఫెక్ట్ ప్రీమియం లుక్‌తో పనిచేస్తాయి[cite: 4, 7, 8]. వీటిలో ఏమైనా మార్పులు కావాలా?
+function verifySchoolActivation(secretCode) {
+  const cleanCode = secretCode ? secretCode.trim() : '';
+  const expectedKey = "@533340";
+  const dynamicKey = String(generateResetKey());
+  return cleanCode === expectedKey || cleanCode === dynamicKey || cleanCode.endsWith("@533340");
+}
+
+function generateResetKey() {
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, '0');
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const yy = String(now.getFullYear()).slice(-2);
+  const dateStr = dd + mm + yy;
+  return 919720 - parseInt(dateStr, 10);
+}
+```[cite: 9]
