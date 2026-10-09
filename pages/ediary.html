@@ -30,16 +30,6 @@
       padding: 8px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      transition: border-color 0.2s ease;
-    }
-    .subject-row:focus-within {
-      border-color: var(--primary-green);
-      box-shadow: 0 0 0 3px rgba(14, 123, 62, 0.08);
-    }
-    @media (max-width: 360px) {
-      .subject-row {
-        grid-template-columns: 90px 1fr;
-      }
     }
     .seal-box {
       border: 2px dashed #1a73e8;
@@ -49,11 +39,10 @@
       text-align: center;
       position: relative;
       margin: 16px 0;
-      box-shadow: 0 4px 15px rgba(26, 115, 232, 0.05);
     }
     .blue-seal-stamp {
-      width: 90px;
-      height: 90px;
+      width: 110px;
+      height: 110px;
       border: 3.5px solid #1a73e8;
       border-radius: 50%;
       display: flex;
@@ -64,11 +53,13 @@
       color: #1a73e8;
       font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 0.65rem;
+      font-size: 0.58rem;
+      text-align: center;
       text-transform: uppercase;
       box-shadow: 0 0 12px rgba(26,115,232,0.25);
       transform: rotate(-6deg);
       background: rgba(255,255,255,0.95);
+      padding: 8px;
     }
     .whatsapp-preview-box {
       background: #E8F8EC;
@@ -83,7 +74,6 @@
       margin-bottom: 16px;
       max-height: 160px;
       overflow-y: auto;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
     }
   </style>
 </head>
@@ -98,7 +88,6 @@
     <header class="app-header"></header>
 
     <main class="app-view">
-      <!-- Premium Hero Header Card -->
       <div class="premium-hero-card">
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="width: 44px; height: 44px; background: var(--primary-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid rgba(14,123,62,0.2);">
@@ -117,7 +106,6 @@
 
       <div class="card" style="border-radius: 18px; padding: 20px;">
         <form id="ediary-form" class="form-vertical" onsubmit="event.preventDefault();">
-          <!-- Date & Teacher Name -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group" style="margin-bottom: 0;">
               <label for="diary-date">Date</label>
@@ -129,7 +117,6 @@
             </div>
           </div>
 
-          <!-- Class Selection -->
           <div class="form-group" style="margin-top: 12px;">
             <label for="class-select">Select Class</label>
             <select id="class-select" onchange="loadClassSubjects()" required style="border-radius: 10px; font-weight: 600;">
@@ -142,7 +129,6 @@
             </select>
           </div>
 
-          <!-- Dynamic Subjects Container -->
           <div style="margin-top: 14px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
               <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker);">Subjects & Topics Covered</label>
@@ -157,42 +143,40 @@
             </div>
           </div>
 
-          <!-- Class Notes Box -->
           <div class="form-group" style="margin-top: 10px;">
             <label for="diary-notes">General Class Notes / Remarks (Optional)</label>
             <textarea id="diary-notes" rows="3" placeholder="Enter special remarks or activities (leave blank if none)..." style="border-radius: 10px;"></textarea>
           </div>
 
-          <!-- Action Buttons 1: Save & Get Seal -->
+          <!-- Separate Save & Clear Buttons -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-            <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px;">
-              💾 Save / Clear
+            <button type="button" onclick="saveDiaryForm()" class="btn" style="background: var(--surface-alt); color: var(--primary-dark); border: 1.5px solid var(--border-color); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              💾 Save Data
             </button>
-            <button type="button" onclick="generateHMSeal()" class="btn btn-primary" style="font-size: 0.85rem; padding: 12px; border-radius: 12px;">
-              🔏 Get HM Seal
+            <button type="button" onclick="clearDiaryForm()" class="btn" style="background: #ffebee; color: #c62828; border: 1.5px solid rgba(198,40,40,0.3); font-size: 0.85rem; padding: 12px; border-radius: 12px; font-weight: 700;">
+              🗑️ Clear All
             </button>
           </div>
+
+          <button type="button" onclick="generateHMSeal()" class="btn btn-primary btn-block" style="margin-top: 8px; font-size: 0.95rem; padding: 14px; border-radius: 12px;">
+            🔏 Get HM Seal & Generate Options
+          </button>
         </form>
 
-        <!-- HM Seal Preview Box (Hidden initially) -->
         <div id="seal-display-section" class="seal-box hidden">
-          <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px; letter-spacing: 0.5px;">OFFICIAL HEAD MASTER VERIFICATION</p>
-          <div class="blue-seal-stamp">
-            <span style="font-size: 0.6rem;">GOVT. A.P.</span>
-            <span style="font-size: 0.5rem; margin-top: 2px;">★ VERIFIED ★</span>
-            <span style="font-size: 0.45rem;">OFFICIAL SEAL</span>
+          <p style="font-size: 0.72rem; font-weight: 700; color: #1a73e8; margin-bottom: 2px;">OFFICIAL HEAD MASTER VERIFICATION</p>
+          <div class="blue-seal-stamp" id="seal-stamp-preview">
+            <!-- Populated dynamically -->
           </div>
-          <p style="font-size: 0.78rem; color: var(--text-color); font-weight: 700;" id="seal-hm-name">HM: --</p>
           <p style="font-size: 0.7rem; color: var(--text-muted);" id="seal-timestamp">Time: --</p>
         </div>
 
-        <!-- Post-Seal Actions -->
         <div id="post-seal-actions" class="hidden" style="margin-top: 16px;">
           <label style="font-weight: 700; font-size: 0.82rem; color: var(--primary-darker); margin-bottom: 6px; display: block;">WhatsApp Formatted Message Preview:</label>
           <div id="whatsapp-text-preview" class="whatsapp-preview-box"></div>
 
           <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3); font-weight: 700;">
+            <button type="button" onclick="shareToWhatsApp()" class="btn" style="background: #25D366; color: white; font-size: 0.95rem; padding: 14px; border-radius: 12px; font-weight: 700;">
               💬 Share to WhatsApp Group
             </button>
             <button type="button" onclick="createDiaryPoster()" class="btn btn-primary" style="font-size: 0.95rem; padding: 14px; border-radius: 12px; background: linear-gradient(135deg, #095C2D 0%, #063D1E 100%); font-weight: 700;">
@@ -216,13 +200,9 @@
         window.location.href = './login.html';
         return;
       }
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('diary-date').value = today;
-
+      document.getElementById('diary-date').value = new Date().toISOString().split('T')[0];
       const savedTeacher = localStorage.getItem('ap_last_teacher') || '';
-      if (savedTeacher) {
-        document.getElementById('teacher-name').value = savedTeacher;
-      }
+      if (savedTeacher) document.getElementById('teacher-name').value = savedTeacher;
     });
 
     function loadClassSubjects() {
@@ -230,12 +210,7 @@
       const container = document.getElementById('subjects-container');
       container.innerHTML = '';
 
-      let defaultSubjects = [];
-      if (classNum === '1' || classNum === '2') {
-        defaultSubjects = ['Telugu', 'English', 'Maths'];
-      } else {
-        defaultSubjects = ['Telugu', 'English', 'Maths', 'EVS'];
-      }
+      let defaultSubjects = (classNum === '1' || classNum === '2') ? ['Telugu', 'English', 'Maths'] : ['Telugu', 'English', 'Maths', 'EVS'];
 
       defaultSubjects.forEach((sub) => {
         container.innerHTML += `
@@ -267,6 +242,21 @@
       alert('E-Diary form data saved successfully!');
     }
 
+    function clearDiaryForm() {
+      if (confirm('Are you sure you want to clear all data and reset the E-Diary fields?')) {
+        document.getElementById('ediary-form').reset();
+        document.getElementById('diary-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('subjects-container').innerHTML = `
+          <p style="font-size: 0.76rem; color: var(--text-muted); text-align: center; padding: 18px; background: var(--surface-alt); border-radius: 12px; border: 1.5px dashed var(--border-color);">
+            Please select a class above to load subjects automatically.
+          </p>
+        `;
+        document.getElementById('seal-display-section').classList.add('hidden');
+        document.getElementById('post-seal-actions').classList.add('hidden');
+        isSealGenerated = false;
+      }
+    }
+
     function generateHMSeal() {
       const classNum = document.getElementById('class-select').value;
       const teacher = document.getElementById('teacher-name').value;
@@ -280,10 +270,16 @@
       }
 
       const hmName = localStorage.getItem('ap_hm_name') || 'Head Master';
+      const schoolName = localStorage.getItem('ap_school_name') || 'AP School';
       const now = new Date();
       const timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      document.getElementById('seal-hm-name').textContent = `Head Master: ${hmName}`;
+      // Seal with HM Name and School Name in round circle
+      document.getElementById('seal-stamp-preview').innerHTML = `
+        <span style="font-size: 0.52rem; font-weight: 700; line-height: 1.1;">${schoolName}</span>
+        <span style="font-size: 0.55rem; font-weight: 800; margin: 3px 0; color: #0c5123;">★ HM: ${hmName} ★</span>
+        <span style="font-size: 0.45rem;">OFFICIAL SEAL</span>
+      `;
       document.getElementById('seal-timestamp').textContent = `Approved On: ${timeStr}`;
 
       document.getElementById('seal-display-section').classList.remove('hidden');
@@ -497,6 +493,7 @@
       ctx.fill();
       ctx.stroke();
 
+      // Render Blue Official Stamp on Canvas with School & HM Name inside
       ctx.save();
       ctx.translate(620, sealBoxY + 108);
       ctx.rotate(-0.08);
@@ -504,22 +501,24 @@
       ctx.strokeStyle = '#1a73e8';
       ctx.lineWidth = 4;
       ctx.beginPath();
-      ctx.arc(0, 0, 58, 0, Math.PI * 2);
+      ctx.arc(0, 0, 62, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.arc(0, 0, 48, 0, Math.PI * 2);
+      ctx.arc(0, 0, 52, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.fillStyle = '#1a73e8';
-      ctx.font = 'bold 10px "Playfair Display", serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('GOVT. OF A.P.', 0, -16);
-      ctx.font = 'bold 11px Inter, sans-serif';
-      ctx.fillText('★ VERIFIED ★', 0, 4);
       ctx.font = 'bold 9px "Playfair Display", serif';
-      ctx.fillText('OFFICIAL SEAL', 0, 22);
+      ctx.textAlign = 'center';
+      ctx.fillText(school.substring(0, 22), 0, -22);
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = '#063D1E';
+      ctx.fillText(`HM: ${localStorage.getItem('ap_hm_name') || 'Head Master'}`, 0, 2);
+      ctx.font = 'bold 9px "Playfair Display", serif';
+      ctx.fillStyle = '#1a73e8';
+      ctx.fillText('OFFICIAL SEAL', 0, 24);
       ctx.restore();
 
       ctx.fillStyle = '#063D1E';
