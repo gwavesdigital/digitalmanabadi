@@ -1,188 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0E7B3E" />
-  <title>AP Schools · Secure Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AP eSchool</title>
+    <!-- Link to your main stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* PIN Login Specific Styles */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f6f9;
+        }
 
-  <link rel="icon" href="../assets/favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="../assets/icon-192.png">
-  <link rel="manifest" href="../manifest.json">
-  <link rel="stylesheet" href="../style.css" />
-  <style>
-    .cinematic-login-card {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 250, 245, 0.92) 100%);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(14, 123, 62, 0.2);
-      box-shadow: 0 16px 40px rgba(14, 123, 62, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      border-radius: 20px;
-      padding: 28px 22px;
-      position: relative;
-      overflow: hidden;
-    }
-    .cinematic-login-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--accent-gold));
-    }
-    .pin-input-field {
-      letter-spacing: 0.4em;
-      text-align: center;
-      font-size: 1.4rem !important;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.9) !important;
-    }
-  </style>
+        .pin-login-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+            border-top: 4px solid var(--gold-accent, #c5a059);
+        }
+
+        .pin-login-card h3 {
+            margin-bottom: 20px;
+            color: #333333;
+            font-size: 1.25rem;
+        }
+
+        .pin-dots-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0 30px 0;
+        }
+
+        .pin-dot {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--gold-accent, #c5a059);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            background-color: transparent;
+        }
+
+        /* Active state when typing correct length digits */
+        .pin-dot.active {
+            background-color: var(--gold-accent, #c5a059);
+            transform: scale(1.1);
+        }
+
+        /* Error state - ONLY applied on wrong PIN */
+        .pin-dot.error {
+            border-color: #d9534f;
+            background-color: #d9534f;
+        }
+
+        .pin-warning-text {
+            color: #d9534f;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none; /* Hidden by default */
+            font-weight: 500;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .pin-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .forgot-pin-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .forgot-pin-link:hover {
+            color: var(--gold-accent, #c5a059);
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <div class="background" aria-hidden="true">
-    <div class="bg-glow bg-glow-green"></div>
-    <div class="bg-glow bg-glow-gold"></div>
-    <div class="bg-grid"></div>
-  </div>
 
-  <div class="app">
-    <header class="app-header"></header>
-
-    <main class="app-view" style="justify-content: center;">
-      <div class="card cinematic-login-card">
-        <!-- Cinematic Emblem Glow -->
-        <div class="hero-emblem" style="width: 68px; height: 68px; margin: 0 auto 14px auto; box-shadow: 0 4px 15px rgba(244, 196, 48, 0.3);">
-          <img src="../assets/icon-192.png" alt="Emblem" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+    <div class="pin-login-card" id="pinContainer">
+        <h3>Enter 4-Digit PIN</h3>
+        
+        <!-- Visual Dot Indicators -->
+        <div class="pin-dots-wrapper" id="pinDots">
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-dot"></div>
         </div>
 
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary-darker); text-align: center; margin-bottom: 4px;">Secure Portal</h2>
-        <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 20px;">Enter your authorized 4-digit PIN.</p>
+        <!-- Hidden actual input to capture keypad / typing smoothly -->
+        <input type="password" id="hiddenPinInput" maxlength="4" pattern="[0-9]*" inputmode="numeric" style="position: absolute; opacity: 0; pointer-events: none;" />
 
-        <!-- Attempt Indicator Dots (Red Warning) -->
-        <div id="attempt-dots-container" class="attempt-dots-wrapper hidden">
-          <span class="attempt-label">Failed Attempts:</span>
-          <div class="dots-group">
-            <div class="attempt-dot" id="dot-1"></div>
-            <div class="attempt-dot" id="dot-2"></div>
-            <div class="attempt-dot" id="dot-3"></div>
-            <div class="attempt-dot" id="dot-4"></div>
-            <div class="attempt-dot" id="dot-5"></div>
-          </div>
-        </div>
+        <!-- Red Attempts Warning Text (Hidden by default) -->
+        <div id="pinWarning" class="pin-warning-text"></div>
 
-        <form id="login-form" onsubmit="handleLogin(event)" class="form-vertical">
-          <div class="form-group">
-            <label for="app-password" style="text-align: center; letter-spacing: 0.5px;">4-DIGIT APP PIN</label>
-            <input type="password" id="app-password" class="pin-input-field" placeholder="••••" maxlength="4" pattern="[0-9]{4}" inputmode="numeric" required autocomplete="current-password" />
-          </div>
+        <a href="reset.html" class="forgot-pin-link">Forgot PIN / Reset?</a>
+    </div>
 
-          <button type="submit" id="login-btn" class="btn btn-primary btn-block" style="padding: 14px; font-size: 0.98rem; margin-top: 4px; box-shadow: 0 6px 20px rgba(14, 123, 62, 0.3);">
-            Login →
-          </button>
-        </form>
+    <script>
+        let currentPin = "";
+        let attemptsLeft = 3; 
 
-        <!-- Forgot Password Link -->
-        <div style="text-align: center; margin-top: 16px;">
-          <a href="./reset.html" style="font-size: 0.78rem; color: var(--primary-dark); font-weight: 600; text-decoration: none;">Forgot 4-Digit PIN?</a>
-        </div>
+        const hiddenInput = document.getElementById("hiddenPinInput");
+        const dots = document.querySelectorAll(".pin-dot");
+        const warningDiv = document.getElementById("pinWarning");
+        const pinContainer = document.getElementById("pinContainer");
 
-        <!-- Lockout Message / Timer -->
-        <div id="lockout-banner" class="hidden lockout-box" style="margin-top: 14px;">
-          ⚠️ Too many failed attempts. App paused for <span id="countdown-timer">60</span>s.
-        </div>
-      </div>
-    </main>
+        // Keep focus on hidden input so typing works seamlessly anywhere on the card
+        document.addEventListener("click", () => hiddenInput.focus());
+        hiddenInput.focus();
 
-    <footer class="app-footer"></footer>
-  </div>
+        hiddenInput.addEventListener("input", (e) => {
+            const val = e.target.value.replace(/\D/g, ""); // Keep numbers only
+            if (val.length <= 4) {
+                currentPin = val;
+                
+                // Clear error styling instantly the moment the user starts typing a new digit
+                warningDiv.style.display = "none";
+                dots.forEach(dot => dot.classList.remove("error"));
 
-  <script src="../js/app.js"></script>
-  <script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const passInput = document.getElementById('app-password');
-      const loginBtn = document.getElementById('login-btn');
-      const dotsContainer = document.getElementById('attempt-dots-container');
-      const lockoutBanner = document.getElementById('lockout-banner');
-      const countdownSpan = document.getElementById('countdown-timer');
+                updateDots();
+                
+                if (currentPin.length === 4) {
+                    verifyPin(currentPin);
+                }
+            }
+        });
 
-      const lockoutExpiry = localStorage.getItem('ap_lockout_time');
-      if (lockoutExpiry && Date.now() < parseInt(lockoutExpiry, 10)) return;
-
-      let failedAttempts = parseInt(localStorage.getItem('ap_failed_attempts') || '0', 10);
-      const savedPass = localStorage.getItem('ap_app_password');
-
-      if (!savedPass) {
-        alert('App not initialized. Please complete setup first.');
-        window.location.href = './setup.html';
-        return;
-      }
-
-      if (passInput.value === savedPass) {
-        localStorage.removeItem('ap_failed_attempts');
-        localStorage.removeItem('ap_lockout_time');
-        window.location.href = './dashboard.html';
-      } else {
-        failedAttempts++;
-        localStorage.setItem('ap_failed_attempts', failedAttempts);
-        passInput.value = '';
-
-        dotsContainer.classList.remove('hidden');
-        for (let i = 1; i <= 5; i++) {
-          const dot = document.getElementById(`dot-${i}`);
-          if (i <= failedAttempts) dot.classList.add('active');
-          else dot.classList.remove('active');
+        function updateDots() {
+            dots.forEach((dot, index) => {
+                if (index < currentPin.length) {
+                    dot.classList.add("active");
+                } else {
+                    dot.classList.remove("active");
+                }
+            });
         }
 
-        if (failedAttempts >= 5) {
-          const lockUntil = Date.now() + 60000;
-          localStorage.setItem('ap_lockout_time', lockUntil);
-          triggerLockoutUI(lockUntil, passInput, loginBtn, lockoutBanner, countdownSpan);
-        } else {
-          alert(`Incorrect PIN. ${5 - failedAttempts} attempts remaining.`);
+        function verifyPin(enteredPin) {
+            // Retrieve correct PIN from localStorage (falls back to "1234" if not set)
+            const savedPin = localStorage.getItem("app_pin") || "1234";
+
+            if (enteredPin === savedPin) {
+                // Success: Clean up and navigate to dashboard
+                warningDiv.style.display = "none";
+                window.location.href = "dashboard.html";
+            } else {
+                // Failure: Trigger shake, turn dots red, and display the warning message in red
+                attemptsLeft--;
+                
+                pinContainer.classList.add("pin-shake");
+                dots.forEach(dot => dot.classList.add("error"));
+                
+                setTimeout(() => {
+                    pinContainer.classList.remove("pin-shake");
+                }, 400);
+
+                if (attemptsLeft > 0) {
+                    warningDiv.style.display = "block"; // Appears only on error
+                    warningDiv.textContent = `Incorrect PIN. ${attemptsLeft} attempt(s) remaining.`;
+                } else {
+                    warningDiv.style.display = "block";
+                    warningDiv.textContent = "Maximum attempts exceeded. Redirecting to reset...";
+                    setTimeout(() => {
+                        window.location.href = "reset.html";
+                    }, 1500);
+                }
+
+                // Reset input fields after a brief delay for a clean retry experience
+                setTimeout(() => {
+                    currentPin = "";
+                    hiddenInput.value = "";
+                    updateDots();
+                }, 600);
+            }
         }
-      }
-    }
-
-    function triggerLockoutUI(lockUntil, inputElem, btnElem, bannerElem, timerElem) {
-      inputElem.disabled = true;
-      btnElem.disabled = true;
-      btnElem.style.opacity = '0.5';
-      bannerElem.classList.remove('hidden');
-
-      const interval = setInterval(() => {
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        if (remaining <= 0) {
-          clearInterval(interval);
-          localStorage.removeItem('ap_failed_attempts');
-          localStorage.removeItem('ap_lockout_time');
-          inputElem.disabled = false;
-          btnElem.disabled = false;
-          btnElem.style.opacity = '1';
-          bannerElem.classList.add('hidden');
-          document.getElementById('attempt-dots-container').classList.add('hidden');
-          for (let i = 1; i <= 5; i++) document.getElementById(`dot-${i}`).classList.remove('active');
-        } else {
-          timerElem.textContent = remaining;
-        }
-      }, 1000);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const lockoutExpiry = localStorage.getItem('ap_lockout_time');
-      if (lockoutExpiry && Date.now() < parseInt(lockoutExpiry, 10)) {
-        const passInput = document.getElementById('app-password');
-        const loginBtn = document.getElementById('login-btn');
-        const lockoutBanner = document.getElementById('lockout-banner');
-        const countdownSpan = document.getElementById('countdown-timer');
-        const failedAttempts = parseInt(localStorage.getItem('ap_failed_attempts') || '5', 10);
-
-        document.getElementById('attempt-dots-container').classList.remove('hidden');
-        for (let i = 1; i <= failedAttempts; i++) document.getElementById(`dot-${i}`).classList.add('active');
-        triggerLockoutUI(parseInt(lockoutExpiry, 10), passInput, loginBtn, lockoutBanner, countdownSpan);
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
