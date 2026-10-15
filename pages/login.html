@@ -3,195 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - AP eSchool</title>
-    <!-- Link to your main stylesheet -->
+    <title>Login - Digital Mana Badi</title>
+    <!-- Your original stylesheet preserving your exact theme and color codes -->
     <link rel="stylesheet" href="../style.css">
-    <style>
-        /* PIN Login Specific Styles */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f6f9;
-        }
-
-        .pin-login-card {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            width: 100%;
-            max-width: 360px;
-            border-top: 4px solid var(--gold-accent, #c5a059);
-        }
-
-        .pin-login-card h3 {
-            margin-bottom: 20px;
-            color: #333333;
-            font-size: 1.25rem;
-        }
-
-        .pin-dots-wrapper {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0 30px 0;
-        }
-
-        .pin-dot {
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--gold-accent, #c5a059);
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            background-color: transparent;
-        }
-
-        /* Active state when typing correct length digits */
-        .pin-dot.active {
-            background-color: var(--gold-accent, #c5a059);
-            transform: scale(1.1);
-        }
-
-        /* Error state - ONLY applied on wrong PIN */
-        .pin-dot.error {
-            border-color: #d9534f;
-            background-color: #d9534f;
-        }
-
-        .pin-warning-text {
-            color: #d9534f;
-            font-size: 0.85rem;
-            margin-top: 15px;
-            display: none; /* Hidden by default */
-            font-weight: 500;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-
-        .pin-shake {
-            animation: shake 0.4s ease-in-out;
-        }
-
-        .forgot-pin-link {
-            display: block;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: #666;
-            text-decoration: none;
-        }
-
-        .forgot-pin-link:hover {
-            color: var(--gold-accent, #c5a059);
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h2>Digital Mana Badi</h2>
+            <p>Enter your 4-digit security PIN</p>
 
-    <div class="pin-login-card" id="pinContainer">
-        <h3>Enter 4-Digit PIN</h3>
-        
-        <!-- Visual Dot Indicators -->
-        <div class="pin-dots-wrapper" id="pinDots">
-            <div class="pin-dot"></div>
-            <div class="pin-dot"></div>
-            <div class="pin-dot"></div>
-            <div class="pin-dot"></div>
+            <!-- Original PIN Input and container -->
+            <div class="input-group">
+                <input type="password" id="pinInput" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••">
+            </div>
+
+            <!-- Red attempts error feedback indicator (appears only on incorrect PIN entry) -->
+            <div id="attemptError" style="color: #d9534f; font-size: 0.85rem; margin-top: 10px; display: none; text-align: center; font-weight: 500;"></div>
+
+            <div class="actions" style="margin-top: 20px;">
+                <button type="button" id="loginBtn" class="btn-submit">Login</button>
+            </div>
+
+            <div class="links" style="margin-top: 15px; text-align: center;">
+                <a href="reset.html" style="font-size: 0.85rem; text-decoration: none; color: #666;">Forgot PIN / Reset?</a>
+            </div>
         </div>
-
-        <!-- Hidden actual input to capture keypad / typing smoothly -->
-        <input type="password" id="hiddenPinInput" maxlength="4" pattern="[0-9]*" inputmode="numeric" style="position: absolute; opacity: 0; pointer-events: none;" />
-
-        <!-- Red Attempts Warning Text (Hidden by default) -->
-        <div id="pinWarning" class="pin-warning-text"></div>
-
-        <a href="reset.html" class="forgot-pin-link">Forgot PIN / Reset?</a>
     </div>
 
     <script>
-        let currentPin = "";
-        let attemptsLeft = 3; 
+        // Track failed attempts out of 5 allowed
+        let failedAttempts = parseInt(localStorage.getItem("login_failed_attempts") || "0");
+        const maxAttempts = 5;
 
-        const hiddenInput = document.getElementById("hiddenPinInput");
-        const dots = document.querySelectorAll(".pin-dot");
-        const warningDiv = document.getElementById("pinWarning");
-        const pinContainer = document.getElementById("pinContainer");
+        const pinInput = document.getElementById("pinInput");
+        const loginBtn = document.getElementById("loginBtn");
+        const attemptError = document.getElementById("attemptError");
 
-        // Keep focus on hidden input so typing works seamlessly anywhere on the card
-        document.addEventListener("click", () => hiddenInput.focus());
-        hiddenInput.focus();
+        // Focus input automatically on load
+        pinInput.focus();
 
-        hiddenInput.addEventListener("input", (e) => {
-            const val = e.target.value.replace(/\D/g, ""); // Keep numbers only
-            if (val.length <= 4) {
-                currentPin = val;
-                
-                // Clear error styling instantly the moment the user starts typing a new digit
-                warningDiv.style.display = "none";
-                dots.forEach(dot => dot.classList.remove("error"));
+        pinInput.addEventListener("input", (e) => {
+            const val = e.target.value.replace(/\D/g, "");
+            pinInput.value = val;
 
-                updateDots();
-                
-                if (currentPin.length === 4) {
-                    verifyPin(currentPin);
-                }
+            // Clear error warning as soon as user types
+            attemptError.style.display = "none";
+            pinInput.style.borderColor = "";
+
+            if (val.length === 4) {
+                validatePin(val);
             }
         });
 
-        function updateDots() {
-            dots.forEach((dot, index) => {
-                if (index < currentPin.length) {
-                    dot.classList.add("active");
-                } else {
-                    dot.classList.remove("active");
-                }
+        if (loginBtn) {
+            loginBtn.addEventListener("click", () => {
+                validatePin(pinInput.value);
             });
         }
 
-        function verifyPin(enteredPin) {
-            // Retrieve correct PIN from localStorage (falls back to "1234" if not set)
-            const savedPin = localStorage.getItem("app_pin") || "1234";
+        function validatePin(enteredPin) {
+            // Fixed password logic: check against your stored setup PIN (defaults to "1234" if not configured)
+            const savedPin = localStorage.getItem("app_pin") || localStorage.getItem("school_pin") || "1234";
 
             if (enteredPin === savedPin) {
-                // Success: Clean up and navigate to dashboard
-                warningDiv.style.display = "none";
+                // Success: reset attempts counter and open dashboard
+                localStorage.setItem("login_failed_attempts", "0");
+                attemptError.style.display = "none";
                 window.location.href = "dashboard.html";
             } else {
-                // Failure: Trigger shake, turn dots red, and display the warning message in red
-                attemptsLeft--;
-                
-                pinContainer.classList.add("pin-shake");
-                dots.forEach(dot => dot.classList.add("error"));
-                
-                setTimeout(() => {
-                    pinContainer.classList.remove("pin-shake");
-                }, 400);
+                // Failure: increment attempt count up to 5
+                failedAttempts++;
+                localStorage.setItem("login_failed_attempts", failedAttempts);
 
-                if (attemptsLeft > 0) {
-                    warningDiv.style.display = "block"; // Appears only on error
-                    warningDiv.textContent = `Incorrect PIN. ${attemptsLeft} attempt(s) remaining.`;
+                const remaining = maxAttempts - failedAttempts;
+
+                // Highlight border/dots red and display the wrong attempt warning
+                pinInput.style.borderColor = "#d9534f";
+                
+                if (remaining > 0) {
+                    attemptError.style.display = "block";
+                    attemptError.textContent = `Wrong attempt ${failedAttempts} of ${maxAttempts} over! (${remaining} attempt(s) left)`;
                 } else {
-                    warningDiv.style.display = "block";
-                    warningDiv.textContent = "Maximum attempts exceeded. Redirecting to reset...";
+                    attemptError.style.display = "block";
+                    attemptError.textContent = `Maximum ${maxAttempts} wrong attempts reached. Locked temporarily.`;
+                    pinInput.disabled = true;
+                    if (loginBtn) loginBtn.disabled = true;
+
                     setTimeout(() => {
                         window.location.href = "reset.html";
-                    }, 1500);
+                    }, 2000);
                 }
 
-                // Reset input fields after a brief delay for a clean retry experience
+                // Clear input after a brief moment for retry
                 setTimeout(() => {
-                    currentPin = "";
-                    hiddenInput.value = "";
-                    updateDots();
-                }, 600);
+                    pinInput.value = "";
+                }, 500);
             }
         }
     </script>
