@@ -37,6 +37,24 @@
       font-weight: 700;
       background: rgba(255, 255, 255, 0.9) !important;
     }
+    /* Added subtle shake animation for wrong PIN without breaking design */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    /* Inline error message styling to replace jarring alerts */
+    .inline-error {
+      font-size: 0.76rem;
+      color: #d9534f;
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +68,7 @@
     <header class="app-header"></header>
 
     <main class="app-view" style="justify-content: center;">
-      <div class="card cinematic-login-card">
+      <div class="card cinematic-login-card" id="login-card">
         <!-- Cinematic Emblem Glow -->
         <div class="hero-emblem" style="width: 68px; height: 68px; margin: 0 auto 14px auto; box-shadow: 0 4px 15px rgba(244, 196, 48, 0.3);">
           <img src="../assets/icon-192.png" alt="Emblem" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" />
@@ -70,6 +88,9 @@
             <div class="attempt-dot" id="dot-5"></div>
           </div>
         </div>
+
+        <!-- Inline Error Feedback -->
+        <div id="inline-error-msg" class="inline-error hidden"></div>
 
         <form id="login-form" onsubmit="handleLogin(event)" class="form-vertical">
           <div class="form-group">
@@ -106,6 +127,8 @@
       const dotsContainer = document.getElementById('attempt-dots-container');
       const lockoutBanner = document.getElementById('lockout-banner');
       const countdownSpan = document.getElementById('countdown-timer');
+      const loginCard = document.getElementById('login-card');
+      const errorMsg = document.getElementById('inline-error-msg');
 
       const lockoutExpiry = localStorage.getItem('ap_lockout_time');
       if (lockoutExpiry && Date.now() < parseInt(lockoutExpiry, 10)) return;
@@ -128,6 +151,11 @@
         localStorage.setItem('ap_failed_attempts', failedAttempts);
         passInput.value = '';
 
+        // Trigger smooth card shake effect
+        loginCard.classList.remove('shake');
+        void loginCard.offsetWidth; // Force reflow
+        loginCard.classList.add('shake');
+
         dotsContainer.classList.remove('hidden');
         for (let i = 1; i <= 5; i++) {
           const dot = document.getElementById(`dot-${i}`);
@@ -136,11 +164,14 @@
         }
 
         if (failedAttempts >= 5) {
+          errorMsg.classList.add('hidden');
           const lockUntil = Date.now() + 60000;
           localStorage.setItem('ap_lockout_time', lockUntil);
           triggerLockoutUI(lockUntil, passInput, loginBtn, lockoutBanner, countdownSpan);
         } else {
-          alert(`Incorrect PIN. ${5 - failedAttempts} attempts remaining.`);
+          // Show sleek inline warning instead of browser alert popup
+          errorMsg.textContent = `Incorrect PIN. ${5 - failedAttempts} attempts remaining.`;
+          errorMsg.classList.remove('hidden');
         }
       }
     }
@@ -162,6 +193,7 @@
           btnElem.style.opacity = '1';
           bannerElem.classList.add('hidden');
           document.getElementById('attempt-dots-container').classList.add('hidden');
+          document.getElementById('inline-error-msg').classList.add('hidden');
           for (let i = 1; i <= 5; i++) document.getElementById(`dot-${i}`).classList.remove('active');
         } else {
           timerElem.textContent = remaining;
